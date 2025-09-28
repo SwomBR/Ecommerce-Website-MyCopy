@@ -1,6 +1,5 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
 import SignIn from './pages/SignIn';
 import SignUp from "./pages/SignUp";
 import CartPage from "./pages/CartPage"
@@ -29,11 +28,11 @@ const App = () => {
         <Route path='details' element={<DetailsPage/>}/>
         <Route path='cart' element={<CartPage/>}/>
         <Route path='checkout' element={<Checkout/>}/>
-        <Route path='' element={<Contact/>}/>
-        <Route path='' element={<AddProduct/>}/>
-        <Route path='' element={<AdminDashboard/>}/>
-        <Route path='' element={<Category/>}/>
-        <Route path='' element={<UpdateProducts/>}/>
+        <Route path='contact' element={<Contact/>}/>
+        <Route path='add' element={<AddProduct/>}/>
+        <Route path='admin' element={<AdminDashboard/>}/>
+        <Route path='category' element={<Category/>}/>
+        <Route path='update' element={<UpdateProducts/>}/>
       </Routes>   
     </BrowserRouter>
   )
