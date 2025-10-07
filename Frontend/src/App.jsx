@@ -2,8 +2,8 @@ import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import SignIn from './pages/SignIn';
 import SignUp from "./pages/SignUp";
-import CartPage from "./pages/CartPage"
-import Checkout from "./pages/Checkout"
+import CartPage from "./pages/UserPages/CartPage"
+import Checkout from "./pages/UserPages/Checkout"
 import Contact from './pages/Contact';
 import DetailsPage from "./pages/DetailsPage";
 import AboutPage from "./pages/AboutPage"
