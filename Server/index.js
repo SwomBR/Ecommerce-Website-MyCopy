@@ -1,9 +1,9 @@
 import express,{json} from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-// import cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import cors from 'cors'
-// import { userAuth } from './Routes/userAuth.js';
+import { userAuth } from './Routes/userAuth.js';
 
 dotenv.config();
 
@@ -15,10 +15,10 @@ app.use(cors({
 }))
 
 app.use(json());
-// app.use(cookieParser()); 
+app.use(cookieParser()); 
 
 
-// app.use('/',userAuth);
+app.use('/',userAuth);
 
 
 mongoose.connect('mongodb://localhost:27017/DuroCap').then(()=>{

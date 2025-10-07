@@ -27,12 +27,10 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle image upload preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setProductImage(file);
@@ -43,7 +41,6 @@ const AddProduct = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
