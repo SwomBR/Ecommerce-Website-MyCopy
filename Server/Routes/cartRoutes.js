@@ -164,11 +164,7 @@ router.post("/cart/payment", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   POST /cart/checkout
- * @desc    Checkout - confirm order and clear cart
- * @access  User only
- */
+
 router.post("/cart/checkout", authenticate, userCheck, async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user._id }).populate("items.product");

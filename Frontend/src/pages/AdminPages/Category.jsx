@@ -10,7 +10,7 @@ const Category = () => {
 
   const API_URL = "http://localhost:5000";
 
-  // Fetch categories
+  // Fetch categories all
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`${API_URL}/categories`);

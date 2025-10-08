@@ -5,11 +5,7 @@ import adminCheck from "../Middleware/adminCheck.js";
 
 const router = express.Router();
 
-/**
- * @route   GET /admin/orders
- * @desc    Get all orders (Admin only)
- * @access  Admin
- */
+
 router.get("/admin/orders", authenticate, adminCheck, async (req, res) => {
   try {
     const orders = await Order.find()
@@ -26,11 +22,7 @@ router.get("/admin/orders", authenticate, adminCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   GET /admin/orders/:id
- * @desc    Get order by ID (Admin only)
- * @access  Admin
- */
+
 router.get("/admin/orders/:id", authenticate, adminCheck, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
@@ -47,11 +39,7 @@ router.get("/admin/orders/:id", authenticate, adminCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   PUT /admin/orders/:id/status
- * @desc    Update order status (Admin only)
- * @access  Admin
- */
+
 router.put("/admin/orders/:id/status", authenticate, adminCheck, async (req, res) => {
   try {
     const { orderStatus, paymentStatus } = req.body;

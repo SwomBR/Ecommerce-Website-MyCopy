@@ -33,10 +33,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/Splash' element={<SplashScreen/>}/>
         <Route path='/' element={<Homepage/>}/>
         <Route path='/SignUp' element={<SignUp/>}/>
         <Route path='/SignIn' element={<SignIn/>}/>
-        <Route path='/Splash' element={<SplashScreen/>}/>
+        
         <Route path='/Products' element={<Products/>}/>
         <Route path='/about' element={<AboutPage/>}/>
         <Route path='/contact' element={<Contact/>}/>

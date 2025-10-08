@@ -8,7 +8,7 @@ const Checkout = () => {
   const [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch latest cart
+  // Fetch latest cart details
   const fetchCart = async () => {
     try {
       const res = await axios.get("/cart", { withCredentials: true });

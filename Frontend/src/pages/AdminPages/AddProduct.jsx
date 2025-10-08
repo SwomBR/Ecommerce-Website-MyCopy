@@ -47,7 +47,7 @@ const AddProduct = () => {
     setMessage("");
 
     try {
-      const token = localStorage.getItem("token"); // token stored after login
+      const token = localStorage.getItem("token"); // token stored after  login
 
       const form = new FormData();
       for (let key in formData) {
