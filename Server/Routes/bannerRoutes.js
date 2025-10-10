@@ -2,7 +2,7 @@ import express from "express";
 import upload from "../middleware/multer.js";
 import authenticate from "../middleware/auth.js";
 import adminCheck from "../middleware/adminCheck.js";
-import Banner from "../Models/banner.js";
+import Banner from "../Models/Banner.js";
 
 const router = express.Router();
 

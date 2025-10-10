@@ -3,15 +3,10 @@ import Cart from "../Models/cart.js";
 import Product from "../Models/product.js";
 import authenticate from "../Middleware/auth.js";
 import userCheck from "../Middleware/userCheck.js";
-// import Order from "../Models/order.js"; // optional - create later if needed
 
 const router = express.Router();
 
-/**
- * @route   POST /cart
- * @desc    Add product to cart (if exists, update quantity)
- * @access  User only
- */
+
 router.post("/cart", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -60,11 +55,7 @@ router.post("/cart", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   GET /cart
- * @desc    Get user’s cart
- * @access  User only
- */
+
 router.get("/cart", authenticate, userCheck, async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user._id }).populate("items.product");
@@ -77,11 +68,7 @@ router.get("/cart", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   PUT /cart/:productId
- * @desc    Update product quantity
- * @access  User only
- */
+
 router.put("/cart/:productId", authenticate, userCheck, async (req, res) => {
   try {
     const { productId } = req.params;
@@ -109,11 +96,6 @@ router.put("/cart/:productId", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   DELETE /cart/:productId
- * @desc    Remove product from cart
- * @access  User only
- */
 router.delete("/cart/:productId", authenticate, userCheck, async (req, res) => {
   try {
     const { productId } = req.params;
@@ -135,11 +117,6 @@ router.delete("/cart/:productId", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   POST /cart/payment
- * @desc    Mock payment processing route
- * @access  User only
- */
 router.post("/cart/payment", authenticate, userCheck, async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user._id });

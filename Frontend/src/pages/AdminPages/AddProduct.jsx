@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
     productName: "",
     prodId: "",
-    categoryName: "",
+    categoryId: "", 
     brand: "",
     material: "",
     shape: "",
@@ -21,10 +21,23 @@ const AddProduct = () => {
     stockQty: "",
   });
 
+  const [categories, setCategories] = useState([]); // store categories
   const [productImage, setProductImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get("/api/allCategories"); 
+        setCategories(res.data);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,7 +59,7 @@ const AddProduct = () => {
     setMessage("");
 
     try {
-      const token = localStorage.getItem("token"); // token stored after  login
+      const token = localStorage.getItem("token");
 
       const form = new FormData();
       for (let key in formData) {
@@ -54,7 +67,7 @@ const AddProduct = () => {
       }
       if (productImage) form.append("productImage", productImage);
 
-      const res = await axios.post("/api/products/addProducts", form, {
+      const res = await axios.post("/api/addProducts", form, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -65,9 +78,8 @@ const AddProduct = () => {
       setFormData({
         productName: "",
         prodId: "",
-        categoryName: "",
+        categoryId: "",
         brand: "",
-        dietaryType: "",
         material: "",
         shape: "",
         color: "",
@@ -85,9 +97,7 @@ const AddProduct = () => {
       setPreview(null);
     } catch (err) {
       console.error(err);
-      setMessage(
-        err.response?.data?.message || "Error adding product. Try again."
-      );
+      setMessage(err.response?.data?.message || "Error adding product. Try again.");
     } finally {
       setLoading(false);
     }
@@ -112,23 +122,42 @@ const AddProduct = () => {
       )}
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {Object.keys(formData).map((key) => (
-          <div key={key}>
-            <label className="block text-gray-600 font-medium capitalize mb-1">
-              {key.replace(/([A-Z])/g, " $1")}
-            </label>
-            <input
-              type={["mrp", "discountPercent", "weight", "stockQty", "reqPurchaseQty"].includes(key) ? "number" : "text"}
-              name={key}
-              value={formData[key]}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-200"
-              required={["productName", "prodId", "mrp", "stockQty"].includes(key)}
-            />
-          </div>
-        ))}
+        <div className="col-span-2">
+          <label className="block text-gray-600 font-medium mb-1">Category</label>
+          <select
+            name="categoryId"
+            value={formData.categoryId}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-200"
+            required
+          >
+            <option value="">Select Category</option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.catname}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        {/* Image Upload */}
+        {Object.keys(formData)
+          .filter((key) => key !== "categoryId") 
+          .map((key) => (
+            <div key={key}>
+              <label className="block text-gray-600 font-medium capitalize mb-1">
+                {key.replace(/([A-Z])/g, " $1")}
+              </label>
+              <input
+                type={["mrp", "discountPercent", "weight", "stockQty", "reqPurchaseQty"].includes(key) ? "number" : "text"}
+                name={key}
+                value={formData[key]}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-200"
+                required={["productName", "prodId", "mrp", "stockQty"].includes(key)}
+              />
+            </div>
+          ))}
+
         <div className="col-span-2">
           <label className="block text-gray-600 font-medium mb-1">Product Image</label>
           <input
@@ -136,6 +165,7 @@ const AddProduct = () => {
             accept="image/*"
             onChange={handleImageChange}
             className="w-full border border-gray-300 rounded-lg p-2"
+            required
           />
           {preview && (
             <img
@@ -146,7 +176,6 @@ const AddProduct = () => {
           )}
         </div>
 
-        {/* Submit Button */}
         <div className="col-span-2 flex justify-center mt-4">
           <button
             type="submit"

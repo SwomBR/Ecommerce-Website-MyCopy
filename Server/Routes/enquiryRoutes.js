@@ -1,17 +1,12 @@
-import express from "express";
-import Enquiry from "../Models/enquiry.js";
+import { Router }from "express";
+import Enquiry from "../Models/Enquiry.js";
 import authenticate from "../Middleware/auth.js";
 import adminCheck from "../Middleware/adminCheck.js";
 import userCheck from "../Middleware/userCheck.js";
 
-const router = express.Router();
+const enquiryRoutes = Router();
 
-/**
- * @route   POST /enquiry
- * @desc    Create a new enquiry (accessible to all users)
- * @access  Public
- */
-router.post("/enquiry", authenticate, userCheck, async (req, res) => {
+enquiryRoutes.post("/addEnquiry", authenticate, userCheck, async (req, res) => {
   try {
     const { productService, name, email, country, phone, message } = req.body;
 
@@ -35,12 +30,7 @@ router.post("/enquiry", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   GET /admin/enquiries
- * @desc    Get all enquiries (admin only)
- * @access  Admin
- */
-router.get("/admin/enquiries", authenticate, adminCheck, async (req, res) => {
+enquiryRoutes.get("/viewAllEnquiries", authenticate, adminCheck, async (req, res) => {
   try {
     const enquiries = await Enquiry.find().sort({ createdAt: -1 });
     res.status(200).json(enquiries);
@@ -49,12 +39,7 @@ router.get("/admin/enquiries", authenticate, adminCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   GET /admin/enquiries/:id
- * @desc    Get a single enquiry by ID (admin only)
- * @access  Admin
- */
-router.get("/admin/enquiries/:id", authenticate, adminCheck, async (req, res) => {
+enquiryRoutes.get("/viewEnquiries/:id", authenticate, adminCheck, async (req, res) => {
   try {
     const { id } = req.params;
     const enquiry = await Enquiry.findById(id);

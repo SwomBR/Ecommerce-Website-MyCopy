@@ -3,6 +3,7 @@ import authenticate from "../Middleware/auth.js";
 import adminCheck from "../Middleware/adminCheck.js";
 import upload from "../Middleware/upload.js";
 import Product from "../Models/Product.js";
+import Category from "../Models/Category.js";  
 
 const productRoutes = Router();
 
@@ -12,24 +13,32 @@ const convertToBase64 = (buffer, mimetype) => {
 
 productRoutes.post( "/addProducts", authenticate, adminCheck, upload.single("productImage"), async (req, res) => {
     try {
-      const { productName, prodId, categoryName, material, shape, color, application, feature, pattern, origin, reqPurchaseQty, mrp, discountPercent, weight, stockQty, } = req.body;
+      const { productName, prodId, categoryId,   material, shape, color, application, feature, pattern, origin, reqPurchaseQty, mrp, discountPercent, weight, stockQty } = req.body;
 
       const existingProduct = await Product.findOne({ prodId });
       if (existingProduct) {
         return res.status(400).json({ message: "Product already exists!" });
       }
 
-      let imageBase64 = null;
-      if (req.file) {
-        imageBase64 = convertToBase64(req.file.buffer, req.file.mimetype);
-      } else {
+      const category = await Category.findById(categoryId);
+      if (!category) {
+        return res.status(400).json({ message: "Invalid category selected!" });
+      }
+
+      if (!req.file) {
         return res.status(400).json({ message: "Product image is required" });
       }
+
+      const imageBase64 = convertToBase64(req.file.buffer, req.file.mimetype);
+
+      const discountedPrice = parseFloat(
+        (mrp - (mrp * discountPercent) / 100).toFixed(2)
+      );
 
       const newProduct = new Product({
         productName,
         prodId,
-        categoryName,
+        category: category._id,  
         material,
         shape,
         color,
@@ -37,16 +46,17 @@ productRoutes.post( "/addProducts", authenticate, adminCheck, upload.single("pro
         feature,
         pattern,
         origin,
-        reqPurchaseQty: parseInt(reqPurchaseQty),
-        mrp: parseFloat(mrp),
-        discountPercent: parseFloat(discountPercent),
+        reqPurchaseQty: Number(reqPurchaseQty),
+        mrp: Number(mrp),
+        discountPercent: Number(discountPercent),
+        discountedPrice,
         weight,
-        stockQty: parseInt(stockQty),
+        stockQty: Number(stockQty),
         productImage: imageBase64,
       });
 
       await newProduct.save();
-      res.status(201).json({ message: "Product added successfully!" });
+      res.status(201).json({ message: "Product added successfully!", product: newProduct });
     } catch (error) {
       console.error("Error adding product:", error);
       res.status(500).json({ message: "Internal Server Error" });
@@ -57,7 +67,7 @@ productRoutes.post( "/addProducts", authenticate, adminCheck, upload.single("pro
 productRoutes.get("/product/:prodId", authenticate, async (req, res) => {
   try {
     const { prodId } = req.params;
-    const product = await Product.findOne({ prodId });
+    const product = await Product.findOne({ prodId }).populate("category"); 
 
     if (!product) {
       return res.status(404).json({ message: "Product not found!" });
@@ -73,11 +83,10 @@ productRoutes.get("/product/:prodId", authenticate, async (req, res) => {
 productRoutes.put( "/productupdate/:prodId", authenticate, adminCheck, upload.single("productImage"), async (req, res) => {
     try {
       const { prodId } = req.params;
-      const { productName, categoryName, material, shape, color, application, feature, pattern, origin, reqPurchaseQty, mrp, discountPercent, weight, stockQty,} = req.body;
+      const { productName, categoryId,  material, shape, color, application, feature, pattern, origin, reqPurchaseQty, mrp, discountPercent, weight, stockQty, } = req.body;
 
       const updateFields = {
         productName,
-        categoryName,
         material,
         shape,
         color,
@@ -85,31 +94,40 @@ productRoutes.put( "/productupdate/:prodId", authenticate, adminCheck, upload.si
         feature,
         pattern,
         origin,
-        reqPurchaseQty: parseInt(reqPurchaseQty),
-        mrp: parseFloat(mrp),
-        discountPercent: parseFloat(discountPercent),
+        reqPurchaseQty: Number(reqPurchaseQty),
+        mrp: Number(mrp),
+        discountPercent: Number(discountPercent),
         weight,
-        stockQty: parseInt(stockQty),
+        stockQty: Number(stockQty),
       };
 
-      // Handle new image upload
-      if (req.file) {
-        const imageBase64 = convertToBase64(req.file.buffer, req.file.mimetype);
-        updateFields.productImage = imageBase64;
+      if (categoryId) {
+        const category = await Category.findById(categoryId);
+        if (!category) {
+          return res.status(400).json({ message: "Invalid category selected!" });
+        }
+        updateFields.category = category._id;
       }
 
-      // Find and update product
+      if (req.file) {
+        updateFields.productImage = convertToBase64(req.file.buffer, req.file.mimetype);
+      }
+
+      if (updateFields.mrp && updateFields.discountPercent >= 0) {
+        updateFields.discountedPrice = parseFloat(
+          (updateFields.mrp - (updateFields.mrp * updateFields.discountPercent) / 100).toFixed(2)
+        );
+      }
+
       const updatedProduct = await Product.findOneAndUpdate(
         { prodId },
         { $set: updateFields },
         { new: true, runValidators: true }
-      );
+      ).populate("category");
 
       if (!updatedProduct) {
         return res.status(404).json({ message: "Product not found!" });
       }
-
-      await updatedProduct.save();
 
       res.status(200).json({ message: "Product updated successfully!", product: updatedProduct });
     } catch (error) {
@@ -119,28 +137,25 @@ productRoutes.put( "/productupdate/:prodId", authenticate, adminCheck, upload.si
   }
 );
 
-// ✅ Delete Product
-productRoutes.delete( "/deleteProduct/:prodId", authenticate,  adminCheck,  async (req, res) => {
-    try {
-      const { prodId } = req.params;
-      const product = await Product.findOneAndDelete({ prodId });
+productRoutes.delete("/deleteProduct/:prodId", authenticate, adminCheck, async (req, res) => {
+  try {
+    const { prodId } = req.params;
+    const product = await Product.findOneAndDelete({ prodId });
 
-      if (!product) {
-        return res.status(404).json({ message: "Product not found!" });
-      }
-
-      res.status(200).json({ message: "Product deleted successfully" });
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      res.status(500).json({ message: "Internal Server Error" });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found!" });
     }
-  }
-);
 
-// ✅ Get All Products
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 productRoutes.get("/allproducts", async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("category");
 
     if (!products.length) {
       return res.status(404).json({ message: "No products available" });

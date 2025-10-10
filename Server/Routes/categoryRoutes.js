@@ -1,26 +1,22 @@
-import express from "express";
-import Category from "../Models/category.js";
+import { Router } from "express";
+import Category from "../Models/Category.js";
 import authenticate from "../Middleware/auth.js";
 import adminCheck from "../Middleware/adminCheck.js";
 
-const router = express.Router();
+const categoryRoutes = Router();
 
-/**
- * @route   POST /admin/categories
- * @desc    Create a new category
- * @access  Admin only
- */
-router.post("/admin/categories", authenticate, adminCheck, async (req, res) => {
+categoryRoutes.post("addCategories", authenticate, adminCheck, async (req, res) => {
   try {
-    const { name, description, image } = req.body;
+    const { catname, catId, description, image } = req.body;
 
-    // Prevent duplicate categories
-    const existingCategory = await Category.findOne({ name });
+    const existingCategory = await Category.findOne({
+      $or: [{ catname }, { catId }]
+    });
     if (existingCategory) {
-      return res.status(400).json({ message: "Category with this name already exists." });
+      return res.status(400).json({ message: "Category with this name or ID already exists." });
     }
 
-    const newCategory = new Category({ name, description, image });
+    const newCategory = new Category({ catname, catId, description, image });
     await newCategory.save();
 
     res.status(201).json({ message: "Category created successfully.", category: newCategory });
@@ -29,33 +25,43 @@ router.post("/admin/categories", authenticate, adminCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   GET /categories
- * @desc    Get all categories
- * @access  Public
- */
-router.get("/categories", async (req, res) => {
+categoryRoutes.get("/viewCategories/:catId", async (req, res) => {
   try {
-    const categories = await Category.find().sort({ createdAt: -1 });
-    res.status(200).json(categories);
+    const { catId } = req.params;
+
+    const category = await Category.findOne({ catId });
+
+    if (!category) {
+      return res.status(404).json({ message: "Category not found." });
+    }
+
+    res.status(200).json(category);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching categories.", error: error.message });
+    res.status(500).json({ message: "Error fetching category.", error: error.message });
   }
 });
 
-/**
- * @route   PUT /admin/categories/:id
- * @desc    Update category by ID
- * @access  Admin only
- */
-router.put("/admin/categories/:id", authenticate, adminCheck, async (req, res) => {
+categoryRoutes.get("/allCategories", async (req, res) => {
+  try {
+    const categories = await Category.find();
+    if (!categories.length) {
+      return res.status(404).json({ message: "No categories found" });
+    }
+    res.status(200).json(categories); 
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching categories", error: error.message });
+  }
+});
+
+
+categoryRoutes.put("/updateCategories/:id", authenticate, adminCheck, async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, image } = req.body;
+    const { catname, description, image } = req.body;
 
     const updatedCategory = await Category.findByIdAndUpdate(
       id,
-      { name, description, image },
+      { catname, description, image },
       { new: true, runValidators: true }
     );
 
@@ -69,12 +75,7 @@ router.put("/admin/categories/:id", authenticate, adminCheck, async (req, res) =
   }
 });
 
-/**
- * @route   DELETE /admin/categories/:id
- * @desc    Delete category by ID
- * @access  Admin only
- */
-router.delete("/admin/categories/:id", authenticate, adminCheck, async (req, res) => {
+categoryRoutes.delete("/deleteCategories/:id", authenticate, adminCheck, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -89,4 +90,4 @@ router.delete("/admin/categories/:id", authenticate, adminCheck, async (req, res
   }
 });
 
-export default router;
+export default categoryRoutes;

@@ -1,16 +1,11 @@
-import express from "express";
+import { Router } from "express";
 import authenticate from "../Middleware/auth.js";
 import userCheck from "../Middleware/userCheck.js";
-import User from "../Models/user.js";
+import User from "../Models/User.js";
 
-const router = express.Router();
+const addressRoutes = Router();
 
-/**
- * @route   GET /profile
- * @desc    Get logged-in user's profile
- * @access  User only
- */
-router.get("/profile", authenticate, userCheck, async (req, res) => {
+addressRoutes.get("/getAddress", authenticate, userCheck, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -20,12 +15,7 @@ router.get("/profile", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   POST /profile/address
- * @desc    Add new address
- * @access  User only
- */
-router.post("/profile/address", authenticate, userCheck, async (req, res) => {
+addressRoutes.post("/addAddress", authenticate, userCheck, async (req, res) => {
   try {
     const { address, district, state, country, pinCode } = req.body;
     if (!address || !district || !state || !country || !pinCode) {
@@ -42,12 +32,7 @@ router.post("/profile/address", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   PUT /profile/address/:index
- * @desc    Edit existing address (by index)
- * @access  User only
- */
-router.put("/profile/address/:index", authenticate, userCheck, async (req, res) => {
+addressRoutes.put("/updateAddress/:index", authenticate, userCheck, async (req, res) => {
   try {
     const { index } = req.params;
     const { address, district, state, country, pinCode } = req.body;
@@ -66,12 +51,7 @@ router.put("/profile/address/:index", authenticate, userCheck, async (req, res) 
   }
 });
 
-/**
- * @route   DELETE /profile/address/:index
- * @desc    Delete an address (by index)
- * @access  User only
- */
-router.delete("/profile/address/:index", authenticate, userCheck, async (req, res) => {
+addressRoutes.delete("/deleteAddress/:index", authenticate, userCheck, async (req, res) => {
   try {
     const { index } = req.params;
 
@@ -89,4 +69,15 @@ router.delete("/profile/address/:index", authenticate, userCheck, async (req, re
   }
 });
 
-export default router;
+addressRoutes.get("/allAddresses", authenticate, userCheck, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("addresses");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({ addresses: user.addresses });
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching addresses", error: err.message });
+  }
+});
+
+export default addressRoutes;

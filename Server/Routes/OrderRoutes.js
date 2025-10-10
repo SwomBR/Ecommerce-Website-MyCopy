@@ -52,7 +52,6 @@ router.put("/admin/orders/:id/status", authenticate, adminCheck, async (req, res
       return res.status(404).json({ message: "Order not found" });
     }
 
-    // Update statuses if provided
     if (orderStatus && allowedOrderStatuses.includes(orderStatus)) {
       order.orderStatus = orderStatus;
     }
