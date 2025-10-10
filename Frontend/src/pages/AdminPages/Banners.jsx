@@ -7,7 +7,6 @@ const Banners = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Fetch all banners
   const fetchBanners = async () => {
     try {
       const res = await fetch("/api/banners");
@@ -22,7 +21,6 @@ const Banners = () => {
     fetchBanners();
   }, []);
 
-  // Add new banner
   const handleAddBanner = async (e) => {
     e.preventDefault();
     setError("");
@@ -41,7 +39,7 @@ const Banners = () => {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // assuming token is stored
+          Authorization: `Bearer ${localStorage.getItem("token")}`, 
         },
       });
 
@@ -57,7 +55,6 @@ const Banners = () => {
     }
   };
 
-  // Delete banner
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this banner?")) return;
 
@@ -81,7 +78,6 @@ const Banners = () => {
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Manage Banners</h2>
 
-      {/* Add Banner Form */}
       <form
         onSubmit={handleAddBanner}
         className="bg-white p-6 rounded-lg shadow-md mb-8 max-w-lg"
@@ -130,7 +126,6 @@ const Banners = () => {
         </button>
       </form>
 
-      {/* Banner List */}
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h3 className="text-lg font-semibold mb-4">All Banners</h3>
 
