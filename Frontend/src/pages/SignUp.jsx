@@ -1,176 +1,125 @@
 import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import authImage from "../assets/authImage.png"
 
 const SignUp = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    userRole: "user",
-    address: "",
-    district: "",
-    state: "",
-    country: "",
-    pinCode: ""
-  });
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-
-    // Basic client-side validation
-    if (!formData.email.match(/^\S+@\S+\.\S+$/)) {
-      return setMessage("Invalid email format");
-    }
-    if (!formData.phone.match(/^[0-9]{7,15}$/)) {
-      return setMessage("Invalid phone number");
-    }
-    if (formData.password.length < 6) {
-      return setMessage("Password must be at least 6 characters");
-    }
-
-    // Structure the address object as per the schema
-    const userData = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.password,
-      userRole: formData.userRole,
-      addresses: [
-        {
-          address: formData.address,
-          district: formData.district,
-          state: formData.state,
-          country: formData.country,
-          pinCode: Number(formData.pinCode)
-        }
-      ]
-    };
+    setError("");
 
     try {
-      const res = await fetch("/api/signup", {
+      const response = await fetch("/api/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData)
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          phone,
+          email,
+          password,
+        }),
       });
 
-      const data = await res.json();
-      if (res.ok) {
-        setMessage("Signup successful!");
-      } else {
-        setMessage(data.message || "Signup failed");
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.msg || "Signup failed");
       }
-    } catch (error) {
-      setMessage("Error connecting to server");
+
+      navigate("/SignIn");
+    } catch (err) {
+      setError(err.message || "Signup failed: Please try again!");
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-2xl shadow-md w-full max-w-md space-y-4"
-      >
-        <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
+      {/* Outer Box */}
+      <div className="flex bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-5xl">
+        {/* Left Side - Image */}
+        <div className="w-1/2 hidden md:flex">
+          <img
+            src={authImage}
+            alt="Signup Illustration"
+            className="object-cover w-full h-full"
+          />
+        </div>
 
-        {message && <p className="text-center text-red-500">{message}</p>}
+        {/* Right Side - Form */}
+        <div className="w-full md:w-1/2 p-10 flex flex-col justify-center">
+          <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+            Create Account
+          </h2>
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone Number"
-          value={formData.phone}
-          onChange={handleChange}
-          required
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-          className="w-full border p-2 rounded"
-        />
+          {error && (
+            <p className="text-center text-red-500 mb-4 font-medium">{error}</p>
+          )}
 
-        {/* Address Section */}
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          value={formData.address}
-          onChange={handleChange}
-          required
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="district"
-          placeholder="District"
-          value={formData.district}
-          onChange={handleChange}
-          required
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="state"
-          placeholder="State"
-          value={formData.state}
-          onChange={handleChange}
-          required
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="country"
-          placeholder="Country"
-          value={formData.country}
-          onChange={handleChange}
-          required
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="number"
-          name="pinCode"
-          placeholder="Pin Code"
-          value={formData.pinCode}
-          onChange={handleChange}
-          required
-          className="w-full border p-2 rounded"
-        />
+          <form onSubmit={handleSignup} className="space-y-4">
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-        >
-          Sign Up
-        </button>
-      </form>
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+
+            <input
+              type="text"
+              placeholder="Phone Number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all"
+            >
+              Sign Up
+            </button>
+          </form>
+
+          <p className="text-center text-gray-600 mt-5">
+            Already have an account?{" "}
+            <Link
+              to="/SignIn"
+              className="text-blue-600 font-medium hover:underline"
+            >
+              Sign In
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

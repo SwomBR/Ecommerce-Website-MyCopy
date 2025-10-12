@@ -3,17 +3,19 @@ import axios from "axios";
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
-  const [formData, setFormData] = useState({ name: "", description: "", image: null });
+  const [formData, setFormData] = useState({
+    catname: "",
+    catId: "",
+    description: "",
+    image: null,
+  });
   const [editMode, setEditMode] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const API_URL = "http://localhost:5000";
-
-  // Fetch categories all
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`${API_URL}/categories`);
+      const res = await axios.get("http://127.0.0.1:8000/allCategories");
       setCategories(res.data);
     } catch (err) {
       console.error("Error fetching categories:", err);
@@ -24,7 +26,6 @@ const Category = () => {
     fetchCategories();
   }, []);
 
-  // Handle input changes
   const handleChange = (e) => {
     if (e.target.name === "image") {
       setFormData({ ...formData, image: e.target.files[0] });
@@ -33,36 +34,38 @@ const Category = () => {
     }
   };
 
-  // Add or update category
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const data = new FormData();
-      data.append("name", formData.name);
+      data.append("catname", formData.catname);
+      data.append("catId", formData.catId);
       data.append("description", formData.description);
       if (formData.image) data.append("image", formData.image);
 
+      const token = localStorage.getItem("token");
+
       if (editMode) {
-        await axios.put(`${API_URL}/admin/categories/${editCategoryId}`, data, {
+        await axios.put(`http://127.0.0.1:8000/updateCategories/${editCategoryId}`, data, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         });
         alert("Category updated successfully!");
       } else {
-        await axios.post(`${API_URL}/admin/categories`, data, {
+        await axios.post("http://127.0.0.1:8000/addCategories", data, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         });
         alert("Category added successfully!");
       }
 
-      setFormData({ name: "", description: "", image: null });
+      setFormData({ catname: "", catId: "", description: "", image: null });
       setEditMode(false);
       setEditCategoryId(null);
       fetchCategories();
@@ -78,17 +81,19 @@ const Category = () => {
     setEditMode(true);
     setEditCategoryId(category._id);
     setFormData({
-      name: category.name,
+      catname: category.catname,
+      catId: category.catId,
       description: category.description,
-      image: null, // image needs to be re-uploaded if changed
+      image: null, 
     });
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this category?")) return;
     try {
-      await axios.delete(`${API_URL}/admin/categories/${id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://127.0.0.1:8000/deleteCategories/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       alert("Category deleted successfully!");
       fetchCategories();
@@ -99,7 +104,7 @@ const Category = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-6 max-w-5xl mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-center">
         {editMode ? "Edit Category" : "Add Category"}
       </h2>
@@ -110,13 +115,24 @@ const Category = () => {
       >
         <input
           type="text"
-          name="name"
+          name="catname"
           placeholder="Category Name"
-          value={formData.name}
+          value={formData.catname}
           onChange={handleChange}
           required
           className="w-full border p-2 rounded-md"
         />
+
+        <input
+          type="text"
+          name="catId"
+          placeholder="Category ID"
+          value={formData.catId}
+          onChange={handleChange}
+          required
+          className="w-full border p-2 rounded-md"
+        />
+
         <textarea
           name="description"
           placeholder="Description"
@@ -125,6 +141,7 @@ const Category = () => {
           required
           className="w-full border p-2 rounded-md"
         />
+
         <input
           type="file"
           name="image"
@@ -140,13 +157,19 @@ const Category = () => {
         >
           {loading ? "Saving..." : editMode ? "Update Category" : "Add Category"}
         </button>
+
         {editMode && (
           <button
             type="button"
             onClick={() => {
               setEditMode(false);
               setEditCategoryId(null);
-              setFormData({ name: "", description: "", image: null });
+              setFormData({
+                catname: "",
+                catId: "",
+                description: "",
+                image: null,
+              });
             }}
             className="ml-3 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
           >
@@ -160,6 +183,7 @@ const Category = () => {
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-100 text-left">
+              <th className="p-3 border">Category ID</th>
               <th className="p-3 border">Name</th>
               <th className="p-3 border">Description</th>
               <th className="p-3 border">Image</th>
@@ -170,13 +194,14 @@ const Category = () => {
             {categories.length > 0 ? (
               categories.map((cat) => (
                 <tr key={cat._id} className="border-t">
-                  <td className="p-3 border">{cat.name}</td>
+                  <td className="p-3 border">{cat.catId}</td>
+                  <td className="p-3 border">{cat.catname}</td>
                   <td className="p-3 border">{cat.description}</td>
                   <td className="p-3 border">
                     {cat.image ? (
                       <img
                         src={cat.image}
-                        alt={cat.name}
+                        alt={cat.catname}
                         className="w-16 h-16 object-cover rounded-md"
                       />
                     ) : (
@@ -201,7 +226,7 @@ const Category = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="text-center p-4 text-gray-500">
+                <td colSpan="5" className="text-center p-4 text-gray-500">
                   No categories found.
                 </td>
               </tr>

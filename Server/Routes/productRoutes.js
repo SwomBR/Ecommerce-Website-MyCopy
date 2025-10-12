@@ -3,7 +3,7 @@ import authenticate from "../Middleware/auth.js";
 import adminCheck from "../Middleware/adminCheck.js";
 import upload from "../Middleware/upload.js";
 import Product from "../Models/Product.js";
-import Category from "../Models/Category.js";  
+import Category from "../Models/Category.js";
 
 const productRoutes = Router();
 
@@ -11,34 +11,44 @@ const convertToBase64 = (buffer, mimetype) => {
   return `data:${mimetype};base64,${buffer.toString("base64")}`;
 };
 
-productRoutes.post( "/addProducts", authenticate, adminCheck, upload.single("productImage"), async (req, res) => {
+productRoutes.post(
+  "/addProducts",
+  authenticate,
+  adminCheck,
+  upload.array("productImages", 5), // allow up to 5 images
+  async (req, res) => {
     try {
-      const { productName, prodId, categoryId,   material, shape, color, application, feature, pattern, origin, reqPurchaseQty, mrp, discountPercent, weight, stockQty } = req.body;
+      const { productName, prodId, category, material, shape, color, application, feature, pattern, origin, moq, mrp, discountPercent, weight, stockQty, size, thickness, battenDistance, coverage, breakStrength, description, waterAbsorb, model, usage, qtyPerSqFt, type,
+      } = req.body;
 
       const existingProduct = await Product.findOne({ prodId });
       if (existingProduct) {
         return res.status(400).json({ message: "Product already exists!" });
       }
 
-      const category = await Category.findById(categoryId);
-      if (!category) {
+      const foundCategory = await Category.findById(category);
+      if (!foundCategory) {
         return res.status(400).json({ message: "Invalid category selected!" });
       }
 
-      if (!req.file) {
-        return res.status(400).json({ message: "Product image is required" });
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ message: "At least one product image is required." });
       }
 
-      const imageBase64 = convertToBase64(req.file.buffer, req.file.mimetype);
+      const imageBase64Array = req.files.map((file) =>
+        `data:${file.mimetype};base64,${file.buffer.toString("base64")}`
+      );
 
+      const MRP = Number(mrp) || 0;
+      const Discount = Number(discountPercent) || 0;
       const discountedPrice = parseFloat(
-        (mrp - (mrp * discountPercent) / 100).toFixed(2)
+        (MRP - (MRP * Discount) / 100).toFixed(2)
       );
 
       const newProduct = new Product({
         productName,
         prodId,
-        category: category._id,  
+        category: foundCategory._id,
         material,
         shape,
         color,
@@ -46,47 +56,66 @@ productRoutes.post( "/addProducts", authenticate, adminCheck, upload.single("pro
         feature,
         pattern,
         origin,
-        reqPurchaseQty: Number(reqPurchaseQty),
-        mrp: Number(mrp),
-        discountPercent: Number(discountPercent),
+        moq: Number(moq) || 0,
+        mrp: MRP,
+        discountPercent: Discount,
         discountedPrice,
         weight,
-        stockQty: Number(stockQty),
-        productImage: imageBase64,
+        stockQty: Number(stockQty) || 0,
+        productImages: imageBase64Array,
+        size,
+        thickness,
+        battenDistance,
+        coverage,
+        breakStrength,
+        description,
+        waterAbsorb,
+        model,
+        usage,
+        qtyPerSqFt,
+        type,
       });
 
       await newProduct.save();
-      res.status(201).json({ message: "Product added successfully!", product: newProduct });
+
+      res.status(201).json({
+        message: "Product added successfully!",
+        product: newProduct,
+      });
     } catch (error) {
       console.error("Error adding product:", error);
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Error adding product.", error: error.message });
     }
   }
 );
 
-productRoutes.get("/product/:prodId", authenticate, async (req, res) => {
+
+// ✅ Get Single Product
+productRoutes.get("/viewproduct/:prodId", authenticate, async (req, res) => {
   try {
     const { prodId } = req.params;
-    const product = await Product.findOne({ prodId }).populate("category"); 
-
+    const product = await Product.findOne({ prodId }).populate("category");
     if (!product) {
       return res.status(404).json({ message: "Product not found!" });
     }
-
-    res.json(product);
+    res.status(200).json(product);
   } catch (error) {
     console.error("Error fetching product:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Error fetching product." });
   }
 });
 
-productRoutes.put( "/productupdate/:prodId", authenticate, adminCheck, upload.single("productImage"), async (req, res) => {
+productRoutes.put(
+  "/productupdate/:prodId",
+  authenticate,
+  adminCheck,
+  upload.array("productImages", 5),
+  async (req, res) => {
     try {
       const { prodId } = req.params;
-      const { productName, categoryId,  material, shape, color, application, feature, pattern, origin, reqPurchaseQty, mrp, discountPercent, weight, stockQty, } = req.body;
-
-      const updateFields = {
+      const {
         productName,
+        category,
         material,
         shape,
         color,
@@ -94,28 +123,88 @@ productRoutes.put( "/productupdate/:prodId", authenticate, adminCheck, upload.si
         feature,
         pattern,
         origin,
-        reqPurchaseQty: Number(reqPurchaseQty),
-        mrp: Number(mrp),
-        discountPercent: Number(discountPercent),
+        moq,
+        mrp,
+        discountPercent,
         weight,
-        stockQty: Number(stockQty),
-      };
+        stockQty,
+        size,
+        thickness,
+        battenDistance,
+        coverage,
+        breakStrength,
+        description,
+        waterAbsorb,
+        model,
+        usage,
+        qtyPerSqFt,
+        type,
+        existingImages,
+      } = req.body;
 
-      if (categoryId) {
-        const category = await Category.findById(categoryId);
-        if (!category) {
+      // Validate category if provided
+      let categoryId;
+      if (category) {
+        const foundCategory = await Category.findById(category);
+        if (!foundCategory) {
           return res.status(400).json({ message: "Invalid category selected!" });
         }
-        updateFields.category = category._id;
+        categoryId = foundCategory._id;
       }
 
-      if (req.file) {
-        updateFields.productImage = convertToBase64(req.file.buffer, req.file.mimetype);
+      // Ensure existingImages is an array
+      let allImages = [];
+      if (existingImages) {
+        allImages = Array.isArray(existingImages)
+          ? existingImages
+          : [existingImages];
       }
 
+      // Add new uploaded images
+      if (req.files && req.files.length > 0) {
+        const newImages = req.files.map(
+          (file) => `data:${file.mimetype};base64,${file.buffer.toString("base64")}`
+        );
+        allImages = [...allImages, ...newImages];
+      }
+
+      // Limit to 5 images
+      allImages = allImages.slice(0, 5);
+
+      // Prepare update object
+      const updateFields = {
+        productName,
+        category: categoryId,
+        material,
+        shape,
+        color,
+        application,
+        feature,
+        pattern,
+        origin,
+        moq: Number(moq) || 0,
+        mrp: Number(mrp) || 0,
+        discountPercent: Number(discountPercent) || 0,
+        weight,
+        stockQty: Number(stockQty) || 0,
+        size,
+        thickness,
+        battenDistance,
+        coverage,
+        breakStrength,
+        description,
+        waterAbsorb,
+        model,
+        usage,
+        qtyPerSqFt,
+        type,
+        productImages: allImages,
+      };
+
+      // Calculate discounted price
       if (updateFields.mrp && updateFields.discountPercent >= 0) {
         updateFields.discountedPrice = parseFloat(
-          (updateFields.mrp - (updateFields.mrp * updateFields.discountPercent) / 100).toFixed(2)
+          ((updateFields.mrp * (100 - updateFields.discountPercent)) / 100).toFixed(2)
         );
       }
 
@@ -132,39 +221,51 @@ productRoutes.put( "/productupdate/:prodId", authenticate, adminCheck, upload.si
       res.status(200).json({ message: "Product updated successfully!", product: updatedProduct });
     } catch (error) {
       console.error("Error updating product:", error);
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Server error while updating product.", error: error.message });
     }
   }
 );
 
-productRoutes.delete("/deleteProduct/:prodId", authenticate, adminCheck, async (req, res) => {
-  try {
-    const { prodId } = req.params;
-    const product = await Product.findOneAndDelete({ prodId });
 
-    if (!product) {
-      return res.status(404).json({ message: "Product not found!" });
+// ✅ Delete Product
+productRoutes.delete(
+  "/deleteProduct/:prodId",
+  authenticate,
+  adminCheck,
+  async (req, res) => {
+    try {
+      const { prodId } = req.params;
+      const product = await Product.findOneAndDelete({ prodId });
+
+      if (!product) {
+        return res.status(404).json({ message: "Product not found!" });
+      }
+
+      res.status(200).json({ message: "Product deleted successfully!" });
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      res.status(500).json({
+        message: "Error deleting product.",
+        error: error.message,
+      });
     }
-
-    res.status(200).json({ message: "Product deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting product:", error);
-    res.status(500).json({ message: "Internal Server Error" });
   }
-});
+);
 
+// ✅ Get All Products
 productRoutes.get("/allproducts", async (req, res) => {
   try {
     const products = await Product.find().populate("category");
-
     if (!products.length) {
-      return res.status(404).json({ message: "No products available" });
+      return res.status(404).json({ message: "No products available." });
     }
-
-    res.json(products);
+    res.status(200).json(products);
   } catch (error) {
     console.error("Error fetching products:", error);
-    res.status(500).json({ message: "Server error. Please try again later." });
+    res.status(500).json({
+      message: "Error fetching products.",
+      error: error.message,
+    });
   }
 });
 

@@ -21,7 +21,6 @@ import UpdateProducts from './pages/AdminPages/UpdateProducts';
 import AddProduct from './pages/AdminPages/AddProduct';
 import Category from './pages/AdminPages/Category'; 
 import AllOrders from './pages/AdminPages/AllOrders';
-import Banners from './pages/AdminPages/Banners';
 import AllProducts from './pages/AdminPages/AllProducts';
 import OrderDetails from './pages/AdminPages/OrderDetails';
 import AllEnquiries from './pages/AdminPages/AllEnquiries';
@@ -38,7 +37,8 @@ const App = () => {
         <Route path='/Products' element={<Products/>}/>
         <Route path='/about' element={<AboutPage/>}/>
         <Route path='/contact' element={<Contact/>}/>
-        <Route path='/details' element={<DetailsPage/>}/>
+        <Route path='/viewProduct/:id' element={<DetailsPage/>}/>
+
         <Route path='/cart' element={<CartPage/>}/>
         <Route path='/checkout' element={<Checkout/>}/>
         <Route path='/userOrders' element={<UserOrders/>}/>
@@ -46,13 +46,12 @@ const App = () => {
         <Route path='/singOrder' element={<SingleOrder/>}/>
 
         <Route path='/add' element={<AddProduct/>}/>
-        <Route path='/admin' element={<AdminDashboard/>}/>
+        <Route path='/adminDashboard' element={<AdminDashboard/>}/>
         <Route path='/category' element={<Category/>}/>
-        <Route path='/update' element={<UpdateProducts/>}/>
+        <Route path='/update/:id' element={<UpdateProducts/>}/>
         <Route path='/allEnq' element={<AllEnquiries/>}/>
         <Route path='/allorder' element={<AllOrders/>}/>
-        <Route path='/allProd' element={<AllProducts/>}/>
-        <Route path='/ban' element={<Banners/>}/>
+        <Route path='/allProducts' element={<AllProducts/>}/>
         <Route path='/enqDetails' element={<EnquiryDetails/>}/>
         <Route path='/ordDetails' element={<OrderDetails/>}/>     
       </Routes>   

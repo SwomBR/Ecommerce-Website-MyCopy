@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from 'cors'
 import { userAuth } from './Routes/userAuth.js';
 import  productRoutes from './Routes/productRoutes.js'
+import categoryRoutes from './Routes/categoryRoutes.js';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 app.use('/',userAuth);
 app.use('/',productRoutes);
+app.use('/',categoryRoutes);
 
 mongoose.connect('mongodb://localhost:27017/DuroCap').then(()=>{
     console.log("Mongodb connected Successfully to DuroCap Website");})
