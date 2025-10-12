@@ -54,4 +54,4 @@ enquiryRoutes.get("/viewEnquiries/:id", authenticate, adminCheck, async (req, re
   }
 });
 
-export default router;
+export default enquiryRoutes;

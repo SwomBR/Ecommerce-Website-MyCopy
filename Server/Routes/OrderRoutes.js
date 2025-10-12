@@ -1,12 +1,12 @@
-import express from "express";
+import { Router } from "express";
 import Order from "../Models/order.js";
 import authenticate from "../Middleware/auth.js";
 import adminCheck from "../Middleware/adminCheck.js";
 
-const router = express.Router();
+const orderRoutes = Router();
 
 
-router.get("/admin/orders", authenticate, adminCheck, async (req, res) => {
+orderRoutes.get("/viewOrders", authenticate, adminCheck, async (req, res) => {
   try {
     const orders = await Order.find()
       .populate("user", "name email")
@@ -23,7 +23,7 @@ router.get("/admin/orders", authenticate, adminCheck, async (req, res) => {
 });
 
 
-router.get("/admin/orders/:id", authenticate, adminCheck, async (req, res) => {
+orderRoutes.get("/admin/orders/:id", authenticate, adminCheck, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate("user", "name email")
@@ -40,7 +40,7 @@ router.get("/admin/orders/:id", authenticate, adminCheck, async (req, res) => {
 });
 
 
-router.put("/admin/orders/:id/status", authenticate, adminCheck, async (req, res) => {
+orderRoutes.put("/admin/orders/:id/status", authenticate, adminCheck, async (req, res) => {
   try {
     const { orderStatus, paymentStatus } = req.body;
 
@@ -68,4 +68,4 @@ router.put("/admin/orders/:id/status", authenticate, adminCheck, async (req, res
   }
 });
 
-export default router;
+export default orderRoutes;

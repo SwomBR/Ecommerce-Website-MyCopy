@@ -25,6 +25,7 @@ import AllProducts from './pages/AdminPages/AllProducts';
 import OrderDetails from './pages/AdminPages/OrderDetails';
 import AllEnquiries from './pages/AdminPages/AllEnquiries';
 import EnquiryDetails from './pages/AdminPages/EnquiryDetails';
+import EnquiryForm from './components/EnquiryForm';
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
         <Route path='/about' element={<AboutPage/>}/>
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/viewProduct/:id' element={<DetailsPage/>}/>
+        <Route path='/enquiryForm' element={<EnquiryForm/>}/>
 
         <Route path='/cart' element={<CartPage/>}/>
         <Route path='/checkout' element={<Checkout/>}/>

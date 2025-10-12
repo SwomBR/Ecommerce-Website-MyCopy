@@ -1,13 +1,13 @@
-import express from "express";
+import { Router } from "express";
 import Cart from "../Models/cart.js";
 import Product from "../Models/product.js";
 import authenticate from "../Middleware/auth.js";
 import userCheck from "../Middleware/userCheck.js";
 
-const router = express.Router();
+const cartRoutes = Router();  
 
 
-router.post("/cart", authenticate, userCheck, async (req, res) => {
+cartRoutes.post("/addToCart", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;
     const { productId, quantity } = req.body;
@@ -56,7 +56,7 @@ router.post("/cart", authenticate, userCheck, async (req, res) => {
 });
 
 
-router.get("/cart", authenticate, userCheck, async (req, res) => {
+cartRoutes.get("/viewcart", authenticate, userCheck, async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user._id }).populate("items.product");
 
@@ -69,7 +69,7 @@ router.get("/cart", authenticate, userCheck, async (req, res) => {
 });
 
 
-router.put("/cart/:productId", authenticate, userCheck, async (req, res) => {
+cartRoutes.put("/updateCart/:productId", authenticate, userCheck, async (req, res) => {
   try {
     const { productId } = req.params;
     const { quantity } = req.body;
@@ -96,7 +96,7 @@ router.put("/cart/:productId", authenticate, userCheck, async (req, res) => {
   }
 });
 
-router.delete("/cart/:productId", authenticate, userCheck, async (req, res) => {
+cartRoutes.delete("/DeleteCart/:productId", authenticate, userCheck, async (req, res) => {
   try {
     const { productId } = req.params;
 
@@ -117,7 +117,7 @@ router.delete("/cart/:productId", authenticate, userCheck, async (req, res) => {
   }
 });
 
-router.post("/cart/payment", authenticate, userCheck, async (req, res) => {
+cartRoutes.post("/cart/payment", authenticate, userCheck, async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user._id });
     if (!cart || cart.items.length === 0) {
@@ -142,7 +142,7 @@ router.post("/cart/payment", authenticate, userCheck, async (req, res) => {
 });
 
 
-router.post("/cart/checkout", authenticate, userCheck, async (req, res) => {
+cartRoutes.post("/cart/checkout", authenticate, userCheck, async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user._id }).populate("items.product");
 
@@ -175,4 +175,4 @@ router.post("/cart/checkout", authenticate, userCheck, async (req, res) => {
   }
 });
 
-export default router;
+export default cartRoutes;

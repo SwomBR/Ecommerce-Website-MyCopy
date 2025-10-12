@@ -5,18 +5,27 @@ const EnquiryDetails = () => {
   const { id } = useParams();
   const [enquiry, setEnquiry] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEnquiry = async () => {
       try {
-        const res = await fetch(`/api/enquiry/${id}`, {
+        const res = await fetch(`/api/viewEnquiries/${id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
+
         const data = await res.json();
-        setEnquiry(data);
+
+        if (!res.ok) {
+          setErrorMsg(data.message || "Failed to fetch enquiry.");
+          setEnquiry(null);
+        } else {
+          setEnquiry(data);
+        }
       } catch (err) {
-        console.error("Error fetching enquiry:", err);
+        setErrorMsg("Error fetching enquiry.");
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -26,6 +35,7 @@ const EnquiryDetails = () => {
   }, [id]);
 
   if (loading) return <div className="p-6 text-lg font-semibold">Loading enquiry details...</div>;
+  if (errorMsg) return <div className="p-6 text-red-600">{errorMsg}</div>;
   if (!enquiry) return <div className="p-6 text-gray-600">Enquiry not found.</div>;
 
   return (
