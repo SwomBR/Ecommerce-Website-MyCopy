@@ -78,6 +78,16 @@ const Contact = () => {
                   </a>
                 </div>
               </div>
+
+              <div className="flex items-center gap-2">
+                <FaMapMarkerAlt className="text-yellow-300" />
+                <div>
+                  <h3 className="font-semibold">Website</h3>
+                  <a href="https://www.google.com/maps/place/DUROCAP+ROOFING+SOLUTIONS/@8.8198747,76.7515059,17z/data=!3m1!4b1!4m6!3m5!1s0x3b05e6602a453be9:0x9a72f985ca62059b!8m2!3d8.8198694!4d76.7540808!16s%2Fg%2F11clwm5qb3?entry=tts" target="_blank" rel="noreferrer" className="hover:underline break-words">
+                    Click to view location.....
+                  </a>
+                </div>
+              </div>
             </div>
 
             {/* Right Column — Enquiry Form */}
@@ -180,8 +190,6 @@ const Contact = () => {
             </div>
           </div>
         </div>
-
-        
 
         <style>{`
           @keyframes float {
