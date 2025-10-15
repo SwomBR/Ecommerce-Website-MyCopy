@@ -32,7 +32,7 @@ const SignIn = () => {
       localStorage.setItem("token", data.token);
 
       if (data.role === "admin") {
-        navigate("/dashboard");
+        navigate("/adminDashboard");
       } else {
         navigate("/home");
       }

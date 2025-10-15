@@ -51,7 +51,7 @@ const App = () => {
         <Route path='/profile' element={<ProfilePage/>}/>
         <Route path='/singOrder' element={<SingleOrder/>}/>
 
-        <Route path='/add' element={<AddProduct/>}/>
+        <Route path='/addproduct' element={<AddProduct/>}/>
         <Route path='/adminDashboard' element={<AdminDashboard/>}/>
         <Route path='/category' element={<Category/>}/>
         <Route path='/update/:id' element={<UpdateProducts/>}/>

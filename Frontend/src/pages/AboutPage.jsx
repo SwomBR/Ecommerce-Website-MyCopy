@@ -1,92 +1,94 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import images01 from '../assets/images01.png';
-import images02 from '../assets/images02.png'
-import images03 from '../assets/images03.png'
-import images09 from '../assets/images09.png'
+
+import images01 from "../assets/images01.png";
+import images02 from "../assets/images02.png";
+import images03 from "../assets/images03.png";
+import images09 from "../assets/images09.png";
 
 const AboutPage = () => {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("opacity-100", "translate-y-0");
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    document.querySelectorAll(".fade-section").forEach((el) => {
+      el.classList.add("opacity-0", "translate-y-8", "transition-all", "duration-700");
+      observer.observe(el);
+    });
+  }, []);
+
   return (
     <>
-    <Navbar/>
-    <div className="min-h-screen bg-grey-100 text-gray-800 px-6 md:px-12 py-10">
+      <Navbar />
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-white py-16 px-6 md:px-12">
+        <div className="flex flex-col md:flex-row items-center justify-between max-w-6xl w-full gap-10">
+          
+          {/* Left Section - About Text */}
+          <div className="md:w-1/2 fade-section">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-5">
+              Welcome to Durocap Roofing India Pvt. Ltd.
+            </h2>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              Durocap Roofing India Pvt. Ltd. stands as a trusted name in
+              premium roofing solutions. Our journey began with a vision to
+              deliver excellence and innovation across every project, ensuring
+              durability, safety, and unmatched design standards.
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              We specialize in crafting high-quality roofing products that
+              cater to commercial, residential, and industrial applications.
+              Every Durocap tile embodies superior craftsmanship, durability,
+              and protection.
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              Our interlocking roof tiles combine innovation with strength,
+              providing an elegant look while maintaining resistance to harsh
+              weather and time. With anti-fungal properties and long-lasting
+              finishes, we redefine what roofs can achieve.
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-6">
+              At Durocap, we believe that a roof should do more than just
+              protect—it should inspire confidence and style for generations to
+              come.
+            </p>
+            
+          </div>
 
-{/* Page Title */}
-<h1 className="text-3xl md:text-4xl font-bold text-blue-900 mb-10 text-center ml-[400px] md:text-left">
-  About Us
-</h1>
-
-<div className="flex flex-col md:flex-row items-center gap-10">
-  {/* Left Section - Image Gallery */}
-  <div className="md:w-1/2 grid grid-cols-2 gap-4">
-    <img
-      src={images01}
-      alt="Roof installation"
-      className="rounded-lg shadow-md object-cover w-full h-48 md:h-64"
-    />
-    <img
-      src={images02}
-      alt="Roof tiles"
-      className="rounded-lg shadow-md object-cover w-full h-48 md:h-64"
-    />
-    <img
-      src={images03}
-      alt="Modern roofing"
-      className="rounded-lg shadow-md object-cover w-full h-48 md:h-64"
-    />
-    <img
-      src={images09}
-      alt="Roof design"
-      className="rounded-lg shadow-md object-cover w-full h-48 md:h-64"
-    />
-  </div>
-
-  {/* Right Section - About Content */}
-  <div className="md:w-1/2 space-y-6 leading-relaxed">
-    <p>
-      Welcome to{" "}
-      <span className="font-semibold text-blue-800">
-        Durocap Roofing India Pvt. Ltd.
-      </span>
-      , a name synonymous with excellence in roofing products. Our journey
-      began with a vision to provide unparalleled roofing solutions, and
-      today, our products are trusted and acclaimed globally.
-    </p>
-
-    <p>
-      At <span className="font-semibold">DUROCAP</span>, we take immense
-      pride in our comprehensive range of roofing solutions catering to
-      commercial, residential, and industrial needs. Our commitment to
-      quality has propelled us to the forefront of the industry, and our
-      products are revered for their exceptional durability and superior
-      performance.
-    </p>
-
-    <p>
-      Our flagship DUROCAP tiles exemplify the pinnacle of quality and
-      reliability. Crafted to outlast and outshine, they offer a level of
-      durability that surpasses industry standards. With built-in
-      anti-fungal properties, we ensure not just a roof but a shield
-      against the elements.
-    </p>
-
-    <p>
-      Your safety is our priority, and our tiles are engineered to provide
-      unparalleled protection. Under the shelter of DUROCAP tiles, you'll
-      find more than just a roof – you'll find peace of mind.
-    </p>
-
-    <p>
-      Our DUROCAP interlocking roof tiles stand as a testament to our
-      commitment to innovation. These exceptional quality tiles come in a
-      spectrum of shades, thoughtfully designed to cater to the unique
-      preferences of each customer.
-    </p>
-  </div>
-</div>
-</div>
-   <Footer/>
+          {/* Right Section - Image Gallery */}
+          <div className="md:w-1/2 grid grid-cols-2 gap-4 fade-section">
+            <img
+              src={images01}
+              alt="Roof installation"
+              className="w-full h-48 md:h-56 object-cover rounded-xl shadow-lg hover:scale-105 hover:-translate-y-2 transition-transform duration-500"
+            />
+            <img
+              src={images02}
+              alt="Roof tiles"
+              className="w-full h-48 md:h-56 object-cover rounded-xl shadow-lg hover:scale-105 hover:-translate-y-2 transition-transform duration-500"
+            />
+            <img
+              src={images03}
+              alt="Modern roofing"
+              className="w-full h-48 md:h-56 object-cover rounded-xl shadow-lg hover:scale-105 hover:-translate-y-2 transition-transform duration-500"
+            />
+            <img
+              src={images09}
+              alt="Roof design"
+              className="w-full h-48 md:h-56 object-cover rounded-xl shadow-lg hover:scale-105 hover:-translate-y-2 transition-transform duration-500"
+            />
+          </div>
+        </div>
+      </section>
+      <Footer />
     </>
   );
 };
