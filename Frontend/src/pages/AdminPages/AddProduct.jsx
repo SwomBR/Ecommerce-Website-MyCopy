@@ -1,6 +1,41 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { X } from "lucide-react";
+import AdminNavbar from "../../components/AdminNavbar";
+
+const productDetailsFields = [
+  ["Product Name", "productName", "text"],
+  ["Product ID", "prodId", "text"],
+  ["Category", "category", "select"],
+  ["Application", "application", "text"],
+  ["Usage", "usage", "text"],
+  ["Model", "model", "text"],
+];
+
+const pricingStockFields = [
+  ["Minimum Order Quantity", "moq", "number"],
+  ["MRP", "mrp", "number"],
+  ["Discount (%)", "discountPercent", "number"],
+  ["Stock Quantity", "stockQty", "number"],
+  ["Weight", "weight", "text"],
+];
+
+const specificationFields = [
+  ["Material", "material"],
+  ["Shape", "shape"],
+  ["Color", "color"],
+  ["Pattern", "pattern"],
+  ["Origin", "origin"],
+  ["Feature", "feature"],
+  ["Size", "size"],
+  ["Thickness", "thickness"],
+  ["Batten Distance", "battenDistance"],
+  ["Coverage", "coverage"],
+  ["Breaking Strength", "breakStrength"],
+  ["Water Absorbance", "waterAbsorb"],
+  ["Quantity per Sq.ft", "qtyPerSqFt"],
+  ["Type", "type"],
+];
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -35,13 +70,13 @@ const AddProduct = () => {
   const [categories, setCategories] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
+  // ✅ Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await axios.get("/api/allCategories");
-        setCategories(res.data);
+        setCategories(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error("Error fetching categories:", err);
       }
@@ -49,20 +84,20 @@ const AddProduct = () => {
     fetchCategories();
   }, []);
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  // ✅ Handle form field change
+  const handleChange = (e) => setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
+  // ✅ Handle image selection
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const totalFiles = [...productImages, ...files.slice(0, 5 - productImages.length)];
-    const updatedImages = totalFiles.map((file) => ({
+    const updatedImages = files.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
     }));
     setProductImages(updatedImages);
   };
 
+  // ✅ Remove selected image
   const handleRemoveImage = (index) => {
     const updated = [...productImages];
     URL.revokeObjectURL(updated[index].preview);
@@ -70,31 +105,35 @@ const AddProduct = () => {
     setProductImages(updated);
   };
 
+  // ✅ Handle submit - send to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage("");
-
-    if (productImages.length === 0) {
-      setMessage("Please upload at least one product image.");
-      setLoading(false);
-      return;
-    }
 
     try {
-      const token = localStorage.getItem("token");
-      const form = new FormData();
-      Object.keys(formData).forEach((key) => form.append(key, formData[key]));
-      productImages.forEach(({ file }) => form.append("productImages", file));
+      setLoading(true);
 
-      const res = await axios.post("/api/addProducts", form, {
+      // Build form data
+      const formDataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
+
+      // Append images
+      productImages.forEach((img) => formDataToSend.append("productImages", img.file));
+
+      // ✅ Get token from localStorage (ensure admin login stored it)
+      const token = localStorage.getItem("token");
+
+      const res = await axios.post("/api/addProducts", formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
 
-      setMessage(res.data.message || "Product added successfully!");
+      alert(res.data.message || "Product added successfully!");
+
+      // Reset form
       setFormData({
         productName: "",
         prodId: "",
@@ -123,187 +162,129 @@ const AddProduct = () => {
         qtyPerSqFt: "",
         type: "",
       });
-      productImages.forEach((img) => URL.revokeObjectURL(img.preview));
       setProductImages([]);
-    } catch (err) {
-      console.error(err);
-      setMessage(err.response?.data?.message || "Error adding product. Try again.");
+    } catch (error) {
+      console.error("Error adding product:", error);
+      alert(error.response?.data?.message || "Error adding product!");
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-xl p-8 mt-10 border border-gray-100">
-      <h2 className="text-2xl font-bold text-gray-800 text-center mb-8">
-        Add New Product
-      </h2>
-
-      {message && (
-        <div
-          className={`p-3 mb-6 rounded-lg text-center font-medium ${
-            message.includes("successfully")
-              ? "bg-green-100 text-green-700 border border-green-200"
-              : "bg-red-100 text-red-700 border border-red-200"
-          }`}
+  // ✅ Reusable input field
+  const renderField = (label, name, type = "text") => (
+    <div key={name} className="flex flex-col mb-4">
+      <label className="text-gray-700 font-medium mb-1">{label}</label>
+      {type === "select" ? (
+        <select
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+          className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
-          {message}
-        </div>
+          <option value="">Select Category</option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat._id}>
+              {cat.catname}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          type={type === "number" ? "number" : type}
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+          className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
       )}
-
-      <form
-        onSubmit={handleSubmit}
-        className="grid grid-cols-1 md:grid-cols-3 gap-8"
-      >
-        {/* -------- Column 1 -------- */}
-        <div className="space-y-5">
-          {[
-            ["Category", "category", "select"],
-            ["Product Name", "productName", "text"],
-            ["Product ID", "prodId", "text"],
-            ["Minimum Order Quantity", "moq", "number"],
-            ["MRP", "mrp", "number"],
-            ["Discount (%)", "discountPercent", "number"],
-            ["Stock Quantity", "stockQty", "number"],
-            ["Application", "application", "text"],
-          ].map(([label, name, type]) => (
-            <div key={name}>
-              <label className="block text-gray-700 font-medium mb-1">{label}</label>
-              {type === "select" ? (
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-                  required
-                >
-                  <option value="">Select Category</option>
-                  {categories.map((cat) => (
-                    <option key={cat._id} value={cat._id}>
-                      {cat.catname}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  type={type}
-                  name={name}
-                  value={formData[name]}
-                  onChange={handleChange}
-                  className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-                />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* -------- Column 2 -------- */}
-        <div className="space-y-5">
-          {[
-            ["Material", "material"],
-            ["Shape", "shape"],
-            ["Color", "color"],
-            ["Pattern", "pattern"],
-            ["Origin", "origin"],
-            ["Feature", "feature"],
-            ["Usage", "usage"],
-            ["Size", "size"],
-          ].map(([label, name]) => (
-            <div key={name}>
-              <label className="block text-gray-700 font-medium mb-1">{label}</label>
-              <input
-                type="text"
-                name={name}
-                value={formData[name]}
-                onChange={handleChange}
-                className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* -------- Column 3 -------- */}
-        <div className="space-y-5">
-          {[
-            ["Thickness", "thickness"],
-            ["Batten Distance", "battenDistance"],
-            ["Coverage", "coverage"],
-            ["Breaking Strength", "breakStrength"],
-            ["Water Absorbance", "waterAbsorb"],
-            ["Weight", "weight"],
-            ["Model", "model"],
-            ["Quantity per Sq.ft", "qtyPerSqFt"],
-            ["Type", "type"],
-          ].map(([label, name]) => (
-            <div key={name}>
-              <label className="block text-gray-700 font-medium mb-1">{label}</label>
-              <input
-                type="text"
-                name={name}
-                value={formData[name]}
-                onChange={handleChange}
-                className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* -------- Description (spans 2 columns) -------- */}
-        <div className="md:col-span-2 space-y-2">
-          <label className="block text-gray-700 font-medium">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows="5"
-            className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-
-        {/* -------- Image Upload (spans 1 column) -------- */}
-        <div className="space-y-3">
-          <label className="block text-gray-700 font-medium">Product Images</label>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImageChange}
-            className="w-full border border-gray-300 rounded-lg p-2"
-          />
-          {productImages.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {productImages.map((img, index) => (
-                <div key={index} className="relative border rounded-lg overflow-hidden">
-                  <img
-                    src={img.preview}
-                    alt={`Preview ${index + 1}`}
-                    className="w-full h-24 object-cover"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(index)}
-                    className="absolute top-1 right-1 bg-black bg-opacity-70 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                  >
-                    <X size={12} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* -------- Submit -------- */}
-        <div className="md:col-span-3 flex justify-center mt-6">
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-10 rounded-lg transition duration-200 shadow-md"
-          >
-            {loading ? "Adding..." : "Add Product"}
-          </button>
-        </div>
-      </form>
     </div>
+  );
+
+  return (
+    <>
+      <AdminNavbar />
+      <div className="max-w-5xl mx-auto py-6 px-4 bg-white min-h-screen">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Add New Product</h2>
+
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          {/* Product Details */}
+          <section className="mb-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">Product Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {productDetailsFields.map(([label, name, type]) => renderField(label, name, type))}
+            </div>
+          </section>
+
+          {/* Pricing & Stock */}
+          <section className="mb-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">Pricing & Stock</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {pricingStockFields.map(([label, name, type]) => renderField(label, name, type))}
+            </div>
+          </section>
+
+          {/* Description */}
+          <section className="mb-6">
+            <label className="text-gray-700 font-medium mb-1 block">Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows="4"
+              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </section>
+
+          {/* Technical Specifications */}
+          <section className="mb-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">Technical Specifications</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {specificationFields.map(([label, name]) => renderField(label, name))}
+            </div>
+          </section>
+
+          {/* Product Images */}
+          <section className="mb-6">
+            <label className="text-gray-700 font-medium mb-2 block">Product Images</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageChange}
+              className="border border-gray-300 rounded p-2 w-full"
+            />
+            {productImages.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
+                {productImages.map((img, index) => (
+                  <div key={index} className="relative border rounded overflow-hidden">
+                    <img src={img.preview} alt={`Preview ${index}`} className="w-full h-24 object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                    >
+                      <X size={12} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* Submit */}
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-8 rounded transition"
+            >
+              {loading ? "Saving..." : "Add Product"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 
