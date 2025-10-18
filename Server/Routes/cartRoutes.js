@@ -6,16 +6,12 @@ import Product from "../Models/Product.js";
 
 const cartRoutes = Router();
 
-/**
- * 🛒 Get logged-in user's cart
- */
 cartRoutes.get("/cart", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;
 
     const cart = await Cart.findOne({ user: userId }).populate("items.product");
     if (!cart) {
-      // Return empty cart structure if no cart exists
       return res.json({
         user: userId,
         items: [],
@@ -31,9 +27,7 @@ cartRoutes.get("/cart", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * ➕ Add item to cart
- */
+
 cartRoutes.post("/cart/add", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -55,10 +49,8 @@ cartRoutes.post("/cart/add", authenticate, userCheck, async (req, res) => {
       cart = new Cart({ user: userId, items: [] });
     }
 
-    // Use the schema method to add item
     await cart.addItem(productId, price, quantity);
     
-    // Populate the product details before sending response
     await cart.populate("items.product");
 
     res.json({ 
@@ -70,9 +62,7 @@ cartRoutes.post("/cart/add", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * 🔄 Update item quantity in cart
- */
+
 cartRoutes.put("/cart/update", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -116,9 +106,7 @@ cartRoutes.put("/cart/update", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * ➖ Remove item from cart
- */
+
 cartRoutes.delete("/cart/remove/:productId", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -150,9 +138,7 @@ cartRoutes.delete("/cart/remove/:productId", authenticate, userCheck, async (req
   }
 });
 
-/**
- * 🗑️ Clear entire cart
- */
+
 cartRoutes.delete("/cart/clear", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;

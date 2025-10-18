@@ -30,7 +30,6 @@ const testimonials = [
 const TestimonialSlider = () => {
   const [current, setCurrent] = useState(0);
 
-  // Auto slide every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
@@ -46,7 +45,6 @@ const TestimonialSlider = () => {
           <span className="block w-16 h-1 bg-blue-500 mx-auto mt-2"></span>
         </h2>
 
-        {/* Slider Container */}
         <div className="relative overflow-hidden">
           <div
             className="flex transition-transform duration-700 ease-in-out"

@@ -12,7 +12,7 @@ const Estimate = () => {
           <p className="text-gray-700 leading-relaxed mb-6">
             If you want a roofing installation or replacement done or know someone
             who needs a roof repair and coating, get in touch with us today! Get
-            the Best Roofing Services in Trivandrum from AJ Roofings.
+            the Best Roofing Services in Kerala.
           </p>
 
           {/* Buttons */}
@@ -27,14 +27,7 @@ const Estimate = () => {
           </div>
         </div>
 
-        {/* Right Illustration */}
-        {/* <div className="mt-10 md:mt-0 md:ml-10">
-          <img
-            src={}
-            alt="Customer support illustration"
-            className="max-w-sm w-full"
-          />
-        </div> */}
+        
       </section>
   )
 }

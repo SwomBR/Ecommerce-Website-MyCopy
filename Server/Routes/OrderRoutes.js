@@ -3,13 +3,10 @@ import Order from "../Models/Order.js";
 import Cart from "../Models/Cart.js";
 import authenticate from "../Middleware/auth.js"; 
 import userCheck from "../Middleware/userCheck.js";       
-import adminCheck from "../Middleware/adminCheck.js";     // ✅ Ensures only admins can access
+import adminCheck from "../Middleware/adminCheck.js";    
 
 const orderRoutes = Router();
 
-/**
- * 🧾 Get all orders for a user
- */
 orderRoutes.get("/allOrders/:userId", authenticate, userCheck, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.params.userId }).populate("items.product");
@@ -20,9 +17,6 @@ orderRoutes.get("/allOrders/:userId", authenticate, userCheck, async (req, res) 
   }
 });
 
-/**
- * 🧍 Get single order by ID (User Access)
- */
 orderRoutes.get("/orderDetails/:orderId", authenticate, userCheck, async (req, res) => {
   try {
     const order = await Order.findById(req.params.orderId).populate("items.product");
@@ -33,9 +27,6 @@ orderRoutes.get("/orderDetails/:orderId", authenticate, userCheck, async (req, r
   }
 });
 
-/**
- * 🛍️ Place an order from user cart
- */
 orderRoutes.post("/placeOrder/:userId", authenticate, userCheck, async (req, res) => {
   try {
     const { userId } = req.params;
@@ -69,7 +60,6 @@ orderRoutes.post("/placeOrder/:userId", authenticate, userCheck, async (req, res
 
     await newOrder.save();
 
-    // Clear cart after placing order
     cart.items = [];
     cart.totalAmount = 0;
     await cart.save();
@@ -80,9 +70,6 @@ orderRoutes.post("/placeOrder/:userId", authenticate, userCheck, async (req, res
   }
 });
 
-/**
- * 🚚 Update order status (Admin Only)
- */
 orderRoutes.patch("/status/:orderId", authenticate, adminCheck, async (req, res) => {
   try {
     const { status } = req.body;
@@ -97,9 +84,7 @@ orderRoutes.patch("/status/:orderId", authenticate, adminCheck, async (req, res)
   }
 });
 
-/**
- * 📦 Get all orders (Admin Only)
- */
+
 orderRoutes.get("/admin/allOrders", authenticate, adminCheck, async (req, res) => {
   try {
     const orders = await Order.find()
@@ -112,9 +97,6 @@ orderRoutes.get("/admin/allOrders", authenticate, adminCheck, async (req, res) =
   }
 });
 
-/**
- * 👤 Get all orders by a specific user (Admin Only)
- */
 orderRoutes.get("/admin/userOrders/:userId", authenticate, adminCheck, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.params.userId })
@@ -127,9 +109,6 @@ orderRoutes.get("/admin/userOrders/:userId", authenticate, adminCheck, async (re
   }
 });
 
-/**
- * 🔍 Get order details by ID (Admin Only)
- */
 orderRoutes.get("/admin/orderDetails/:orderId", authenticate, adminCheck, async (req, res) => {
   try {
     const order = await Order.findById(req.params.orderId)

@@ -6,7 +6,6 @@ import userCheck from "../Middleware/userCheck.js";
 
 const enquiryRoutes = Router();
 
-// Add Enquiry
 enquiryRoutes.post("/addEnquiry", authenticate, userCheck, async (req, res) => {
   try {
     const { enquiryType, name, email, country, phone, message } = req.body;
@@ -31,7 +30,6 @@ enquiryRoutes.post("/addEnquiry", authenticate, userCheck, async (req, res) => {
   }
 });
 
-// View All Enquiries (Admin)
 enquiryRoutes.get("/viewAllEnquiries", authenticate, adminCheck, async (req, res) => {
   try {
     const enquiries = await Enquiry.find().sort({ createdAt: -1 });
@@ -41,7 +39,6 @@ enquiryRoutes.get("/viewAllEnquiries", authenticate, adminCheck, async (req, res
   }
 });
 
-// View Single Enquiry (Admin)
 enquiryRoutes.get("/viewEnquiry/:id", authenticate, adminCheck, async (req, res) => {
   try {
     const { id } = req.params;

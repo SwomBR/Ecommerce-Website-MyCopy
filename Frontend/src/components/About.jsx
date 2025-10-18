@@ -5,7 +5,7 @@ const About = () => {
     { number: "250+", text: "Projects Completed" },
     { number: "120+", text: "Happy Clients" },
     { number: "50+", text: "Team Members" },
-    { number: "10+", text: "Years Experience" },
+    { number: "15+", text: "Years Experience" },
   ];
 
   return (

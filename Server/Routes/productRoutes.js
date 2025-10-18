@@ -11,12 +11,7 @@ const convertToBase64 = (buffer, mimetype) => {
   return `data:${mimetype};base64,${buffer.toString("base64")}`;
 };
 
-productRoutes.post(
-  "/addProducts",
-  authenticate,
-  adminCheck,
-  upload.array("productImages", 5), 
-  async (req, res) => {
+productRoutes.post("/addProducts", authenticate, adminCheck, upload.array("productImages", 5),  async (req, res) => {
     try {
       const { productName, prodId, category, material, shape, color, application, feature, pattern, origin, moq, mrp, discountPercent, weight, stockQty, size, thickness, battenDistance, coverage, breakStrength, description, waterAbsorb, model, usage, qtyPerSqFt, type,
       } = req.body;
@@ -89,8 +84,6 @@ productRoutes.post(
   }
 );
 
-
-// ✅ Get Single Product
 productRoutes.get("/viewproduct/:prodId", authenticate, async (req, res) => {
   try {
     const { prodId } = req.params;
@@ -105,12 +98,7 @@ productRoutes.get("/viewproduct/:prodId", authenticate, async (req, res) => {
   }
 });
 
-productRoutes.put(
-  "/productupdate/:prodId",
-  authenticate,
-  adminCheck,
-  upload.array("productImages", 5),
-  async (req, res) => {
+productRoutes.put( "/productupdate/:prodId", authenticate, adminCheck, upload.array("productImages", 5), async (req, res) => {
     try {
       const { prodId } = req.params;
       const {
@@ -142,7 +130,6 @@ productRoutes.put(
         existingImages,
       } = req.body;
 
-      // Validate category if provided
       let categoryId;
       if (category) {
         const foundCategory = await Category.findById(category);
@@ -152,7 +139,6 @@ productRoutes.put(
         categoryId = foundCategory._id;
       }
 
-      // Ensure existingImages is an array
       let allImages = [];
       if (existingImages) {
         allImages = Array.isArray(existingImages)
@@ -160,7 +146,6 @@ productRoutes.put(
           : [existingImages];
       }
 
-      // Add new uploaded images
       if (req.files && req.files.length > 0) {
         const newImages = req.files.map(
           (file) => `data:${file.mimetype};base64,${file.buffer.toString("base64")}`
@@ -168,10 +153,8 @@ productRoutes.put(
         allImages = [...allImages, ...newImages];
       }
 
-      // Limit to 5 images
       allImages = allImages.slice(0, 5);
 
-      // Prepare update object
       const updateFields = {
         productName,
         category: categoryId,
@@ -201,7 +184,6 @@ productRoutes.put(
         productImages: allImages,
       };
 
-      // Calculate discounted price
       if (updateFields.mrp && updateFields.discountPercent >= 0) {
         updateFields.discountedPrice = parseFloat(
           ((updateFields.mrp * (100 - updateFields.discountPercent)) / 100).toFixed(2)
@@ -227,12 +209,7 @@ productRoutes.put(
 );
 
 
-// ✅ Delete Product
-productRoutes.delete(
-  "/deleteProduct/:prodId",
-  authenticate,
-  adminCheck,
-  async (req, res) => {
+productRoutes.delete("/deleteProduct/:prodId", authenticate, adminCheck, async (req, res) => {
     try {
       const { prodId } = req.params;
       const product = await Product.findOneAndDelete({ prodId });
@@ -252,7 +229,6 @@ productRoutes.delete(
   }
 );
 
-// ✅ Get All Products
 productRoutes.get("/allproducts", async (req, res) => {
   try {
     const products = await Product.find().populate("category");

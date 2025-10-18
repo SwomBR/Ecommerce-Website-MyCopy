@@ -5,7 +5,6 @@ import adminCheck from "../Middleware/adminCheck.js";
 
 const faqRoutes = Router();
 
-// ✅ Add FAQ
 faqRoutes.post("/addFAQ", authenticate, adminCheck, async (req, res) => {
   try {
     const { slnumber, question, category, answers } = req.body;
@@ -21,7 +20,6 @@ faqRoutes.post("/addFAQ", authenticate, adminCheck, async (req, res) => {
   }
 });
 
-// ✅ Update FAQ
 faqRoutes.put("/updateFAQ/:id", authenticate, adminCheck, async (req, res) => {
   try {
     const { id } = req.params;
@@ -36,7 +34,6 @@ faqRoutes.put("/updateFAQ/:id", authenticate, adminCheck, async (req, res) => {
   }
 });
 
-// ✅ Get All FAQs
 faqRoutes.get("/getAllFAQ", async (req, res) => {
   try {
     const faqs = await Faq.find();
@@ -46,7 +43,6 @@ faqRoutes.get("/getAllFAQ", async (req, res) => {
   }
 });
 
-// ✅ Delete FAQ
 faqRoutes.delete("/deleteFAQ/:id", authenticate, adminCheck, async (req, res) => {
   try {
     const { id } = req.params;

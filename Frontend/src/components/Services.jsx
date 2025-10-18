@@ -1,4 +1,3 @@
-// src/components/Services.jsx
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -76,7 +75,6 @@ const Services = () => {
             data-aos-delay={service.delay}
             className="relative bg-white rounded-2xl p-10 text-center shadow-lg transform transition duration-400 hover:-translate-y-3 hover:rotate-x-1 hover:rotate-y-1 overflow-hidden w-full sm:w-[90%] md:w-[90%] lg:w-[85%]"
           >
-            {/* Glow effect */}
             <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-gradient-radial from-blue-600/15 to-transparent rotate-[30deg] animate-[spin_8s_linear_infinite] pointer-events-none"></div>
 
             <div className="relative z-10 flex flex-col items-center">

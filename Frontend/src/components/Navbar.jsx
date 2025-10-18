@@ -59,7 +59,6 @@ const Navbar = () => {
           </Link>
         ))}
 
-        {/* ---- Sign In / User Dropdown ---- */}
         {!user ? (
           <Link
             to="/signin"
