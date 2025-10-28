@@ -7,16 +7,13 @@ const AdminNavbar = () => {
 
   const handleLogout = async () => {
     try {
-      // Call backend logout route
       await axios.get("http://localhost:8000/logout", {
         withCredentials: true,
       });
 
-      // Remove any stored tokens
       localStorage.removeItem("token");
       localStorage.removeItem("role");
 
-      // Redirect to login page
       navigate("/login");
     } catch (error) {
       console.error("Logout Error:", error);
@@ -27,7 +24,6 @@ const AdminNavbar = () => {
   return (
     <div className="w-64 bg-white shadow-xl flex flex-col fixed h-full justify-between z-20">
       <div>
-        {/* Sidebar Header */}
         <div className="w-full flex items-center justify-between px-4 py-4 border-b border-gray-200 bg-indigo-50">
           <h2 className="text-2xl font-semibold text-indigo-600">
             Admin Dashboard
@@ -37,9 +33,7 @@ const AdminNavbar = () => {
           </button>
         </div>
 
-        {/* Sidebar Menu */}
         <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-          {/* Dashboard Link */}
           <Link
             to="/adminDashboard"
             className="flex items-center p-2 rounded-lg bg-indigo-50 text-indigo-600 font-medium"
@@ -47,7 +41,6 @@ const AdminNavbar = () => {
             <i className="fas fa-tachometer-alt mr-3"></i> Dashboard
           </Link>
 
-          {/* Other Pages */}
           <div className="space-y-2 mt-4">
             <Link
               to="/category"
