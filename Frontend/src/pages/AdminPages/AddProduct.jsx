@@ -105,23 +105,19 @@ const AddProduct = () => {
     setProductImages(updated);
   };
 
-  // ✅ Handle submit - send to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
 
-      // Build form data
       const formDataToSend = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });
 
-      // Append images
       productImages.forEach((img) => formDataToSend.append("productImages", img.file));
 
-      // ✅ Get token from localStorage (ensure admin login stored it)
       const token = localStorage.getItem("token");
 
       const res = await axios.post("/api/addProducts", formDataToSend, {

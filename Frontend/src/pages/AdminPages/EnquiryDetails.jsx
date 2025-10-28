@@ -48,7 +48,7 @@ const EnquiryDetails = () => {
     return <div className="p-6 text-gray-600">Enquiry not found.</div>;
 
   return (
-    <div className="p-6 max-w-3xl mx-auto bg-white shadow-md rounded-lg">
+    <div className="p-6 max-w-3xl mx-auto bg-white shadow-md rounded-lg ">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Enquiry Details</h2>
 
       <div className="space-y-3">

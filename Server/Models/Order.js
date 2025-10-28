@@ -2,26 +2,10 @@ import { Schema, model } from "mongoose";
 import Product from "./Product.js";
 
 const orderItemSchema = new Schema({
-  product: {
-    type: Schema.Types.ObjectId,
-    ref: "Product",
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-    min: 1,
-  },
-  priceAtPurchase: {
-    type: Number,
-    required: true,
-    min: 0,
-  },
-  totalItemPrice: {
-    type: Number,
-    required: true,
-    min: 0,
-  },
+  product: { type: Schema.Types.ObjectId, ref: "Product", required: true, },
+  quantity: { type: Number, required: true, min: 1,},
+  priceAtPurchase: { type: Number, required: true, min: 0,},
+  totalItemPrice: { type: Number, required: true, min: 0 },
 }, { _id: false });
 
 const orderSchema = new Schema({

@@ -38,7 +38,7 @@ const ProductCard = ({ product }) => {
   };
 
   const handleViewDetails = () => {
-    navigate(`/viewProduct/${product.prodId}`); // Use prodId as per backend
+    navigate(`/viewProduct/${product.prodId}`); 
   };
 
   return (

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AdminNavbar from "../../components/AdminNavbar";
 
 const AllEnquiries = () => {
   const [enquiries, setEnquiries] = useState([]);
@@ -73,7 +74,9 @@ const AllEnquiries = () => {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <>
+    <AdminNavbar/>
+    <div className="p-2 max-w-6xl mx-auto ml-[400px] overflow-y-auto">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">All Enquiries</h2>
 
       {/* Filters */}
@@ -101,9 +104,7 @@ const AllEnquiries = () => {
                 <th className="py-2 px-4 border-b text-left">Name</th>
                 <th className="py-2 px-4 border-b text-left">Email</th>
                 <th className="py-2 px-4 border-b text-left">Phone</th>
-                <th className="py-2 px-4 border-b text-left">Country</th>
                 <th className="py-2 px-4 border-b text-left">Type</th>
-                <th className="py-2 px-4 border-b text-left">Message</th>
                 <th className="py-2 px-4 border-b text-left">Date</th>
                 <th className="py-2 px-4 border-b text-left">Status</th>
                 <th className="py-2 px-4 border-b text-left">Actions</th>
@@ -115,11 +116,7 @@ const AllEnquiries = () => {
                   <td className="py-2 px-4">{enquiry.name}</td>
                   <td className="py-2 px-4">{enquiry.email}</td>
                   <td className="py-2 px-4">{enquiry.phone}</td>
-                  <td className="py-2 px-4">{enquiry.country}</td>
                   <td className="py-2 px-4">{enquiry.enquiryType}</td>
-                  <td className="py-2 px-4 truncate max-w-xs" title={enquiry.message}>
-                    {enquiry.message.slice(0, 40)}...
-                  </td>
                   <td className="py-2 px-4">
                     {new Date(enquiry.createdAt).toLocaleDateString()}
                   </td>
@@ -145,6 +142,7 @@ const AllEnquiries = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

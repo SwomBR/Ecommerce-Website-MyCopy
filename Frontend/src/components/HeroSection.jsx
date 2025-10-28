@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion"; // 👈 Import Framer Motion
+import { motion } from "framer-motion"; 
 import HeroImage from "../assets/HeroImage.jpg";
 import MainLogo from "../assets/MainLogo.png";
 
@@ -11,9 +11,9 @@ const HeroSection = () => {
         
         {/* Animated text */}
         <motion.h2
-          initial={{ opacity: 0, y: 50 }}      // starts slightly below and transparent
-          animate={{ opacity: 1, y: 0 }}       // fades in and slides up
-          transition={{ duration: 1.2, ease: "easeOut" }} // smooth timing
+          initial={{ opacity: 0, y: 50 }}      
+          animate={{ opacity: 1, y: 0 }}       
+          transition={{ duration: 1.2, ease: "easeOut" }}
           className="text-xl md:text-2xl lg:text-3xl leading-relaxed font-serif font-light mb-6"
         >
           We are{" "}
