@@ -98,7 +98,7 @@ const ProfilePage = () => {
     <div className="p-6 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">My Profile</h2>
 
-      {/* Profile Info */}
+       
       <div className="bg-white p-6 rounded-lg shadow-md mb-6">
         <p><span className="font-semibold">Name:</span> {user.name}</p>
         <p><span className="font-semibold">Email:</span> {user.email}</p>
@@ -106,7 +106,7 @@ const ProfilePage = () => {
         <p><span className="font-semibold">User Role:</span> {user.userRole}</p>
       </div>
 
-      {/* Address Form */}
+       
       <div className="bg-white p-6 rounded-lg shadow-md mb-8">
         <h3 className="text-lg font-semibold mb-4">
           {editIndex !== null ? "Edit Address" : "Add Address"}
@@ -126,7 +126,7 @@ const ProfilePage = () => {
         </form>
       </div>
 
-      {/* Address List */}
+       
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h3 className="text-lg font-semibold mb-4">Saved Addresses</h3>
         {user.addresses.length === 0 ? (

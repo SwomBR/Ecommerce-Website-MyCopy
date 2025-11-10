@@ -59,7 +59,6 @@ const ServicePage = () => {
     <>
       <Navbar />
       <section className="bg-white py-20 px-6 md:px-12">
-        {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-blue-900 inline-block relative">
             Our Roofing Services
@@ -71,7 +70,6 @@ const ServicePage = () => {
           </p>
         </div>
 
-        {/* Services Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
           {services.map((service, index) => (
             <div
@@ -79,18 +77,15 @@ const ServicePage = () => {
               className={`service-card bg-white rounded-xl shadow-md overflow-hidden transform transition-all duration-700 opacity-0 translate-y-8 hover:-translate-y-3 hover:shadow-2xl`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              {/* Image Section */}
               <div className="relative h-56 overflow-hidden">
                 <img
                   src={service.img}
                   alt={service.title}
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                 />
-                {/* optional overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
               </div>
-
-              {/* Content Section */}
+ 
               <div className="p-6 flex flex-col justify-between">
                 <div>
                   <h3 className="text-xl font-semibold text-blue-800 mb-3">
@@ -105,7 +100,7 @@ const ServicePage = () => {
           ))}
         </div>
 
-        {/* CTA Button */}
+        
         <div className="flex justify-center mt-16">
           <Link
             to="/contact"

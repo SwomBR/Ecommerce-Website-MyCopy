@@ -3,8 +3,7 @@ import React from 'react';
 const FeatureCards = () => {
   return (
     <div className="flex justify-center gap-10 -mt-20 relative z-10 px-10">
-      {/* Feature Card 1 */}
-      <div className="bg-white rounded-2xl shadow-xl p-6 w-72 text-center">
+       <div className="bg-white rounded-2xl shadow-xl p-6 w-72 text-center">
         <div className="text-red-500 text-3xl mb-2">🏠</div>
         <h3 className="font-semibold text-lg mb-1">Quality Materials</h3>
         <p className="text-gray-500 text-sm">
@@ -12,8 +11,7 @@ const FeatureCards = () => {
         </p>
       </div>
 
-      {/* Feature Card 2 */}
-      <div className="bg-white rounded-2xl shadow-xl p-6 w-72 text-center">
+       <div className="bg-white rounded-2xl shadow-xl p-6 w-72 text-center">
         <div className="text-red-500 text-3xl mb-2">👷</div>
         <h3 className="font-semibold text-lg mb-1">Expert Engineer</h3>
         <p className="text-gray-500 text-sm">
@@ -21,8 +19,7 @@ const FeatureCards = () => {
         </p>
       </div>
 
-      {/* Feature Card 3 */}
-      <div className="bg-white rounded-2xl shadow-xl p-6 w-72 text-center">
+       <div className="bg-white rounded-2xl shadow-xl p-6 w-72 text-center">
         <div className="text-red-500 text-3xl mb-2">🧰</div>
         <h3 className="font-semibold text-lg mb-1">Quality Maintenance</h3>
         <p className="text-gray-500 text-sm">

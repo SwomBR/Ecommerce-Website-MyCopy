@@ -32,8 +32,7 @@ const AboutPage = () => {
       <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-white py-16 px-6 md:px-12">
         <div className="flex flex-col md:flex-row items-center justify-between max-w-6xl w-full gap-10">
           
-          {/* Left Section - About Text */}
-          <div className="md:w-1/2 fade-section">
+           <div className="md:w-1/2 fade-section">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-5">
               Welcome to Durocap Roofing India Pvt. Ltd.
             </h2>
@@ -63,8 +62,7 @@ const AboutPage = () => {
             
           </div>
 
-          {/* Right Section - Image Gallery */}
-          <div className="md:w-1/2 grid grid-cols-2 gap-4 fade-section">
+           <div className="md:w-1/2 grid grid-cols-2 gap-4 fade-section">
             <img
               src={images01}
               alt="Roof installation"

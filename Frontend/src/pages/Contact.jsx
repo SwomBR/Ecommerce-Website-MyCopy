@@ -62,8 +62,7 @@ const Contact = () => {
 
           <div className="flex flex-col md:flex-row bg-white rounded-xl shadow-lg overflow-hidden">
 
-            {/* Left Column */}
-            <div className="md:flex-1 p-6 md:p-8 bg-gradient-to-br from-blue-500 to-gray-800 text-white space-y-4 relative overflow-hidden">
+             <div className="md:flex-1 p-6 md:p-8 bg-gradient-to-br from-blue-500 to-gray-800 text-white space-y-4 relative overflow-hidden">
               <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2">
                 <FaGlobe /> Durocap Roofing India Pvt. Ltd.
               </h2>
@@ -108,11 +107,11 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Right Column — Enquiry Form */}
+             
             <div className="md:flex-1 p-6 md:p-8 bg-white relative">
               <form onSubmit={handleSubmit} className="space-y-4">
 
-                {/* Enquiry Type Dropdown */}
+                 
                 <div>
                   <label className="block font-medium mb-1 text-sm">Enquiry Type *</label>
                   <select
@@ -129,7 +128,7 @@ const Contact = () => {
                   </select>
                 </div>
 
-                {/* Name */}
+                 
                 <div>
                   <label className="block font-medium mb-1 text-sm">Your Name *</label>
                   <input
@@ -143,7 +142,7 @@ const Contact = () => {
                   />
                 </div>
 
-                {/* Email */}
+                 
                 <div>
                   <label className="block font-medium mb-1 text-sm">Email *</label>
                   <input
@@ -157,7 +156,7 @@ const Contact = () => {
                   />
                 </div>
 
-                {/* Country */}
+               
                 <div>
                   <label className="block font-medium mb-1 text-sm">Country *</label>
                   <input
@@ -171,7 +170,7 @@ const Contact = () => {
                   />
                 </div>
 
-                {/* Phone */}
+                 
                 <div>
                   <label className="block font-medium mb-1 text-sm">Phone *</label>
                   <input
@@ -186,7 +185,7 @@ const Contact = () => {
                   />
                 </div>
 
-                {/* Message */}
+                 
                 <div>
                   <label className="block font-medium mb-1 text-sm">Message *</label>
                   <textarea
@@ -200,7 +199,7 @@ const Contact = () => {
                   />
                 </div>
 
-                {/* Buttons */}
+                 
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"

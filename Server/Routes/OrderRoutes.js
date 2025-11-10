@@ -8,15 +8,6 @@ import authenticate from "../Middleware/auth.js";
 
 const orderRoutes = Router();
 
-/* =============================
-      📦 USER ROUTES
-============================= */
-
-/**
- * @route   POST /order/place
- * @desc    Place an order (checkout)
- * @access  Private (User)
- */
 orderRoutes.post("/order/place",authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -27,7 +18,6 @@ orderRoutes.post("/order/place",authenticate, userCheck, async (req, res) => {
       return res.status(400).json({ message: "Your cart is empty." });
     }
 
-    // ✅ Validate stock before proceeding
     for (const item of cart.items) {
       if (item.product.stockQty < item.quantity) {
         return res.status(400).json({
@@ -36,7 +26,6 @@ orderRoutes.post("/order/place",authenticate, userCheck, async (req, res) => {
       }
     }
 
-    // ✅ Create order items
     const orderItems = cart.items.map((item) => ({
       product: item.product._id,
       quantity: item.quantity,
@@ -60,7 +49,6 @@ orderRoutes.post("/order/place",authenticate, userCheck, async (req, res) => {
 
     await newOrder.save();
 
-    // ✅ Deduct stock after order confirmation
     const session = await Product.startSession();
     session.startTransaction();
     try {
@@ -80,7 +68,6 @@ orderRoutes.post("/order/place",authenticate, userCheck, async (req, res) => {
       session.endSession();
     }
 
-    // ✅ Clear the cart
     await Cart.findOneAndUpdate(
       { user: userId },
       { $set: { items: [], totalAmount: 0 } }
@@ -96,11 +83,7 @@ orderRoutes.post("/order/place",authenticate, userCheck, async (req, res) => {
   }
 });
 
-/**
- * @route   GET /orders
- * @desc    Get all orders of a logged-in user
- * @access  Private (User)
- */
+
 orderRoutes.get("/orders", userCheck,authenticate, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user._id })
@@ -114,11 +97,7 @@ orderRoutes.get("/orders", userCheck,authenticate, async (req, res) => {
   }
 });
 
-/**
- * @route   GET /order/:id
- * @desc    Get single order details
- * @access  Private (User)
- */
+
 orderRoutes.get("/order/:id", userCheck, authenticate, async (req, res) => {
   try {
     const order = await Order.findOne({
@@ -137,11 +116,6 @@ orderRoutes.get("/order/:id", userCheck, authenticate, async (req, res) => {
   }
 });
 
-/**
- * @route   PUT /order/:id/cancel
- * @desc    Cancel an order (if still pending)
- * @access  Private (User)
- */
 orderRoutes.put("/order/:id/cancel",authenticate, userCheck, async (req, res) => {
   try {
     const order = await Order.findOne({
@@ -162,7 +136,6 @@ orderRoutes.put("/order/:id/cancel",authenticate, userCheck, async (req, res) =>
     order.orderStatus = "Cancelled";
     await order.save();
 
-    // ✅ Restore stock
     for (const item of order.items) {
       const product = await Product.findById(item.product);
       if (product) {
@@ -178,15 +151,6 @@ orderRoutes.put("/order/:id/cancel",authenticate, userCheck, async (req, res) =>
   }
 });
 
-/* =============================
-      🧾 ADMIN ROUTES
-============================= */
-
-/**
- * @route   GET /admin/allOrders
- * @desc    View all orders (Admin)
- * @access  Private (Admin)
- */
 orderRoutes.get("/admin/allOrders",authenticate, adminCheck, async (req, res) => {
   try {
     const orders = await Order.find()
@@ -201,11 +165,6 @@ orderRoutes.get("/admin/allOrders",authenticate, adminCheck, async (req, res) =>
   }
 });
 
-/**
- * @route   GET /admin/orderDetails/:id
- * @desc    View single order (Admin)
- * @access  Private (Admin)
- */
 orderRoutes.get("/admin/orderDetails/:id",authenticate, adminCheck, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
@@ -223,11 +182,6 @@ orderRoutes.get("/admin/orderDetails/:id",authenticate, adminCheck, async (req, 
   }
 });
 
-/**
- * @route   PUT /admin/orderStatus/:id
- * @desc    Update order status (Admin)
- * @access  Private (Admin)
- */
 orderRoutes.put("/admin/orderStatus/:id",authenticate, adminCheck, async (req, res) => {
   try {
     const { status } = req.body;

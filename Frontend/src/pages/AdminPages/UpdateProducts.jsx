@@ -75,8 +75,7 @@ const UpdateProducts = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Fetch categories + product
-  useEffect(() => {
+   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -110,11 +109,9 @@ const UpdateProducts = () => {
     fetchData();
   }, [id]);
 
-  // ✅ Handle input changes
-  const handleChange = (e) => setProduct({ ...product, [e.target.name]: e.target.value });
+   const handleChange = (e) => setProduct({ ...product, [e.target.name]: e.target.value });
 
-  // ✅ Handle image selection
-  const handleImageChange = (e) => {
+   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const newImgs = files.map((file) => ({
       src: URL.createObjectURL(file),
@@ -124,11 +121,9 @@ const UpdateProducts = () => {
     setImages([...images, ...newImgs]);
   };
 
-  // ✅ Remove image
-  const handleRemoveImage = (index) => setImages(images.filter((_, i) => i !== index));
+   const handleRemoveImage = (index) => setImages(images.filter((_, i) => i !== index));
 
-  // ✅ Handle form submission
-  const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -138,8 +133,7 @@ const UpdateProducts = () => {
         formData.append(key, value);
       });
 
-      // Append old + new images
-      images
+       images
         .filter((img) => !img.isNew)
         .forEach((img) => formData.append("existingImages", img.src));
       images
@@ -164,8 +158,7 @@ const UpdateProducts = () => {
     }
   };
 
-  // ✅ Reusable input renderer
-  const renderField = (label, name, type = "text") => (
+   const renderField = (label, name, type = "text") => (
     <div key={name} className="flex flex-col mb-4">
       <label className="text-gray-700 font-medium mb-1">{label}</label>
       {type === "select" ? (
@@ -206,7 +199,7 @@ const UpdateProducts = () => {
           <p className="text-center text-gray-500 animate-pulse">Loading...</p>
         ) : (
           <form onSubmit={handleSubmit} encType="multipart/form-data">
-            {/* Product Details */}
+            
             <section className="mb-6">
               <h3 className="text-xl font-semibold mb-4 text-gray-700">Product Details</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -216,7 +209,7 @@ const UpdateProducts = () => {
               </div>
             </section>
 
-            {/* Pricing & Stock */}
+             
             <section className="mb-6">
               <h3 className="text-xl font-semibold mb-4 text-gray-700">Pricing & Stock</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -226,7 +219,7 @@ const UpdateProducts = () => {
               </div>
             </section>
 
-            {/* Description */}
+             
             <section className="mb-6">
               <label className="text-gray-700 font-medium mb-1 block">Description</label>
               <textarea
@@ -238,7 +231,7 @@ const UpdateProducts = () => {
               />
             </section>
 
-            {/* Technical Specifications */}
+             
             <section className="mb-6">
               <h3 className="text-xl font-semibold mb-4 text-gray-700">
                 Technical Specifications
@@ -248,7 +241,7 @@ const UpdateProducts = () => {
               </div>
             </section>
 
-            {/* Product Images */}
+        
             <section className="mb-6">
               <label className="text-gray-700 font-medium mb-2 block">
                 Product Images <span className="text-gray-500 text-sm">(Max 5)</span>
@@ -283,8 +276,7 @@ const UpdateProducts = () => {
               )}
             </section>
 
-            {/* Submit */}
-            <div className="flex justify-center">
+             <div className="flex justify-center">
               <button
                 type="submit"
                 disabled={loading}

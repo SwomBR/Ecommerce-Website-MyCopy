@@ -13,7 +13,7 @@ const AllProducts = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  // ✅ Fetch all products
+  
   const fetchProducts = async () => {
     try {
       const res = await axios.get("http://localhost:8000/allproducts", {
@@ -24,8 +24,7 @@ const AllProducts = () => {
       setProducts(data);
       setFilteredProducts(data);
 
-      // ✅ Extract unique category names
-      const uniqueCats = [
+       const uniqueCats = [
         ...new Set(data.map((p) => p.category?.catname).filter(Boolean)),
       ];
       setCategories(uniqueCats);
@@ -41,8 +40,7 @@ const AllProducts = () => {
     fetchProducts();
   }, []);
 
-  // ✅ Handle Delete
-  const handleDelete = async (prodId) => {
+   const handleDelete = async (prodId) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
       await axios.delete(`http://localhost:8000/deleteProduct/${prodId}`, {
@@ -58,8 +56,7 @@ const AllProducts = () => {
     }
   };
 
-  // ✅ Filter logic (category + search)
-  const handleFilter = (searchText, category, productList = products) => {
+   const handleFilter = (searchText, category, productList = products) => {
     let filtered = productList;
 
     if (category !== "All") {
@@ -79,8 +76,7 @@ const AllProducts = () => {
     setFilteredProducts(filtered);
   };
 
-  // ✅ On change handlers
-  const handleSearchChange = (e) => {
+   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
     handleFilter(value, selectedCategory);
@@ -100,13 +96,11 @@ const AllProducts = () => {
       <AdminNavbar />
       <div className="min-h-screen bg-gray-200">
       <div className="p-6 max-w-7xl ml-[330px] bg-white shadow-md rounded-lg">
-        {/* Header Section */}
-        <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+         <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
           <h2 className="text-2xl font-bold text-gray-800">All Products</h2>
 
           <div className="flex flex-wrap gap-3 items-center">
-            {/* 🔍 Search Bar */}
-            <input
+             <input
               type="text"
               placeholder="Search by name or ID..."
               value={search}
@@ -114,8 +108,7 @@ const AllProducts = () => {
               className="border rounded px-3 py-2 w-56 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
-            {/* 🧩 Category Filter */}
-            <select
+             <select
               value={selectedCategory}
               onChange={handleCategoryChange}
               className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -128,8 +121,7 @@ const AllProducts = () => {
               ))}
             </select>
 
-            {/* ➕ Add Product Button */}
-            <button
+             <button
               onClick={() => navigate("/add")}
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
@@ -138,8 +130,7 @@ const AllProducts = () => {
           </div>
         </div>
 
-        {/* Table Section */}
-        {filteredProducts.length === 0 ? (
+         {filteredProducts.length === 0 ? (
           <p className="text-gray-600">No products found.</p>
         ) : (
           <div className="overflow-x-auto">

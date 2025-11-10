@@ -6,9 +6,6 @@ import Product from "../Models/Product.js";
 
 const cartRoutes = Router();
 
-/* ===========================================================
-   🛒 GET CART DETAILS
-=========================================================== */
 cartRoutes.get("/cart", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -24,10 +21,7 @@ cartRoutes.get("/cart", authenticate, userCheck, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-/* ===========================================================
-   ➕ ADD ITEM TO CART
-=========================================================== */
+ 
 cartRoutes.post("/cart/add", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -90,9 +84,6 @@ cartRoutes.post("/cart/add", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/* ===========================================================
-   ✏️ UPDATE ITEM QUANTITY
-=========================================================== */
 cartRoutes.put("/cart/update", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -151,9 +142,6 @@ cartRoutes.put("/cart/update", authenticate, userCheck, async (req, res) => {
   }
 });
 
-/* ===========================================================
-   ❌ REMOVE ITEM FROM CART
-=========================================================== */
 cartRoutes.delete(
   "/cart/remove/:productId",
   authenticate,
@@ -196,9 +184,6 @@ cartRoutes.delete(
   }
 );
 
-/* ===========================================================
-   🧹 CLEAR ENTIRE CART
-=========================================================== */
 cartRoutes.delete("/cart/clear", authenticate, userCheck, async (req, res) => {
   try {
     const userId = req.user._id;

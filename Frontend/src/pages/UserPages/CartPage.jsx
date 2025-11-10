@@ -8,8 +8,7 @@ const CartPage = () => {
   const [updating, setUpdating] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch cart data
-  const fetchCart = async () => {
+   const fetchCart = async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
@@ -28,8 +27,7 @@ const CartPage = () => {
     fetchCart();
   }, []);
 
-  // Update quantity
-  const handleQuantityChange = async (productId, quantity) => {
+   const handleQuantityChange = async (productId, quantity) => {
     if (quantity < 1) return;
     try {
       setUpdating(true);
@@ -47,8 +45,7 @@ const CartPage = () => {
     }
   };
 
-  // Remove product
-  const handleRemove = async (productId) => {
+   const handleRemove = async (productId) => {
     try {
       setUpdating(true);
       const token = localStorage.getItem("token");
@@ -63,8 +60,7 @@ const CartPage = () => {
     }
   };
 
-  // Clear cart
-  const handleClearCart = async () => {
+   const handleClearCart = async () => {
     try {
       setUpdating(true);
       const token = localStorage.getItem("token");

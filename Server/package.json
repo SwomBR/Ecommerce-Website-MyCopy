@@ -9,7 +9,7 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Anjana Unnikrishnan",
+  "author": "A",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",

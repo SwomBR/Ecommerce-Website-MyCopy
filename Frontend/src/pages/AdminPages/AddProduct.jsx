@@ -71,8 +71,7 @@ const AddProduct = () => {
   const [productImages, setProductImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Fetch categories
-  useEffect(() => {
+   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await axios.get("/api/allCategories");
@@ -84,11 +83,9 @@ const AddProduct = () => {
     fetchCategories();
   }, []);
 
-  // ✅ Handle form field change
-  const handleChange = (e) => setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+   const handleChange = (e) => setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  // ✅ Handle image selection
-  const handleImageChange = (e) => {
+   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const updatedImages = files.map((file) => ({
       file,
@@ -97,8 +94,7 @@ const AddProduct = () => {
     setProductImages(updatedImages);
   };
 
-  // ✅ Remove selected image
-  const handleRemoveImage = (index) => {
+   const handleRemoveImage = (index) => {
     const updated = [...productImages];
     URL.revokeObjectURL(updated[index].preview);
     updated.splice(index, 1);
@@ -129,8 +125,7 @@ const AddProduct = () => {
 
       alert(res.data.message || "Product added successfully!");
 
-      // Reset form
-      setFormData({
+       setFormData({
         productName: "",
         prodId: "",
         category: "",
@@ -167,8 +162,7 @@ const AddProduct = () => {
     }
   };
 
-  // ✅ Reusable input field
-  const renderField = (label, name, type = "text") => (
+   const renderField = (label, name, type = "text") => (
     <div key={name} className="flex flex-col mb-4">
       <label className="text-gray-700 font-medium mb-1">{label}</label>
       {type === "select" ? (
@@ -218,8 +212,7 @@ const AddProduct = () => {
             </div>
           </section>
 
-          {/* Description */}
-          <section className="mb-6">
+           <section className="mb-6">
             <label className="text-gray-700 font-medium mb-1 block">Description</label>
             <textarea
               name="description"
@@ -264,8 +257,7 @@ const AddProduct = () => {
             )}
           </section>
 
-          {/* Submit */}
-          <div className="flex justify-center">
+           <div className="flex justify-center">
             <button
               type="submit"
               disabled={loading}

@@ -4,8 +4,7 @@ const AllOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch all orders
-  useEffect(() => {
+   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const res = await fetch("/api/orders");

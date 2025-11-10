@@ -73,10 +73,7 @@ orderSchema.pre("save", function (next) {
   next();
 });
 
-/**
- * ✅ Post-save Hook: Deduct stock quantity
- * Runs only when an order is created (not updated)
- */
+
 orderSchema.post("save", async function (doc, next) {
   try {
     if (doc.orderStatus === "pending" || doc.orderStatus === "confirmed") {
@@ -91,7 +88,6 @@ orderSchema.post("save", async function (doc, next) {
           throw new Error(`Insufficient stock for product: ${product.productName}`);
         }
 
-        // Reduce stock
         product.stockQty -= item.quantity;
         await product.save();
       }

@@ -34,8 +34,7 @@ const AllEnquiries = () => {
     fetchEnquiries();
   }, []);
 
-  // Filter logic (Type only)
-  useEffect(() => {
+   useEffect(() => {
     let filtered = enquiries;
     if (filterType !== "all") {
       filtered = filtered.filter(
@@ -45,11 +44,9 @@ const AllEnquiries = () => {
     setFilteredEnquiries(filtered);
   }, [filterType, enquiries]);
 
-  // Handle view + mark as viewed
-  const handleView = async (id) => {
+   const handleView = async (id) => {
     try {
-      // Mark enquiry as viewed (no disable logic)
-      await fetch(`http://localhost:8000/markAsViewed/${id}`, {
+       await fetch(`http://localhost:8000/markAsViewed/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -57,13 +54,11 @@ const AllEnquiries = () => {
         },
       });
 
-      // Update local state immediately
-      setEnquiries((prev) =>
+       setEnquiries((prev) =>
         prev.map((e) => (e._id === id ? { ...e, viewed: true } : e))
       );
 
-      // Navigate to details page
-      navigate(`/enquiries/${id}`);
+       navigate(`/enquiries/${id}`);
     } catch (err) {
       console.error("Error marking enquiry as viewed:", err);
     }
@@ -79,8 +74,7 @@ const AllEnquiries = () => {
     <div className="p-2 max-w-6xl mx-auto ml-[400px] overflow-y-auto">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">All Enquiries</h2>
 
-      {/* Filters */}
-      <div className="flex flex-wrap gap-4 mb-6">
+       <div className="flex flex-wrap gap-4 mb-6">
         <select
           className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           value={filterType}
@@ -93,8 +87,7 @@ const AllEnquiries = () => {
         </select>
       </div>
 
-      {/* Enquiry Table */}
-      {filteredEnquiries.length === 0 ? (
+       {filteredEnquiries.length === 0 ? (
         <p className="text-gray-500">No enquiries found for the selected filters.</p>
       ) : (
         <div className="overflow-x-auto">

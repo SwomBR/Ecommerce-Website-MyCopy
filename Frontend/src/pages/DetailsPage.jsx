@@ -15,8 +15,7 @@ const DetailsPage = () => {
   const [cartLoading, setCartLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // --- Fetch product ---
-  useEffect(() => {
+   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -73,7 +72,7 @@ const DetailsPage = () => {
     productImages,
   } = product;
 
-  // --- Only show selected attributes above tabs ---
+   
   const mainDetails = [
     { label: "Minimum Order Quantity", value: moq },
     { label: "Qty/SqFt", value: qtyPerSqFt },
@@ -119,8 +118,7 @@ const DetailsPage = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b">
+       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex items-center space-x-2 text-sm text-gray-500">
             <span className="hover:text-gray-700 cursor-pointer">Home</span>
@@ -132,11 +130,9 @@ const DetailsPage = () => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Images */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             {productImages?.length ? (
               <Slider {...sliderSettings}>
                 {productImages.map((img, idx) => (
@@ -158,8 +154,7 @@ const DetailsPage = () => {
             )}
           </div>
 
-          {/* Info */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 lg:p-8">
+           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 lg:p-8">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
                 {category?.catname || "Product"}
@@ -198,8 +193,7 @@ const DetailsPage = () => {
               )}
             </div>
 
-            {/* Display selected main details */}
-            {mainDetails.length > 0 && (
+             {mainDetails.length > 0 && (
               <div className="border-t border-b border-gray-200 py-6 mb-6">
                 <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4">Product Details</h3>
                 <div className="space-y-3">
@@ -213,8 +207,7 @@ const DetailsPage = () => {
               </div>
             )}
 
-            {/* Quantity + Add Cart */}
-            <div className="space-y-4">
+             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <div className="flex items-center border border-gray-300 rounded-lg">
                   <button 
@@ -262,7 +255,7 @@ const DetailsPage = () => {
         </div>
       </div>
 
-      {/* Tabs */}
+     
       {(description || mainDetails.length > 0) && (
         <div className="bg-white border-t border-gray-200 mt-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

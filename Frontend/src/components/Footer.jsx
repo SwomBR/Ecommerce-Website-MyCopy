@@ -18,8 +18,7 @@ export default function CollegeFooter() {
 
   return (
     <footer className="relative bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white overflow-hidden">
-      {/* Floating elements */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
+       <div className="absolute inset-0 opacity-30 pointer-events-none">
         {floatingElements.map((elem) => (
           <div
             key={elem.id}
@@ -36,8 +35,7 @@ export default function CollegeFooter() {
         ))}
       </div>
 
-      {/* Footer content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-16">
+       <div className="relative z-10 max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="lg:col-span-1">
             <div className="flex items-center gap-4 mb-4">
@@ -67,8 +65,7 @@ export default function CollegeFooter() {
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div>
+           <div>
             <h3 className="text-lg font-bold mb-4 text-cyan-400">Contact Us</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
@@ -98,8 +95,7 @@ export default function CollegeFooter() {
           </div>
         </div>
 
-        {/* Footer bottom */}
-        <div className="border-t border-gray-700 pt-6 mt-8">
+         <div className="border-t border-gray-700 pt-6 mt-8">
           <p className="text-center text-gray-400 text-sm">
             &copy; 2023 Durocap Roofing Solution All Rights Reserved. |{' '}
             <a href="#" className="text-cyan-400 hover:text-cyan-300">Privacy Policy</a> |{' '}
@@ -108,8 +104,7 @@ export default function CollegeFooter() {
         </div>
       </div>
 
-      {/* Floating animation */}
-      <style>{`
+       <style>{`
         @keyframes float {
           0%, 100% {
             transform: translateY(0px);

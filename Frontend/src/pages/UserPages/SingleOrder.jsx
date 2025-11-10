@@ -47,7 +47,7 @@ const SingleOrder = () => {
     <div className="p-6 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Order Details</h2>
 
-      {/* Basic Order Info */}
+       
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="flex justify-between mb-2">
           <span className="text-gray-700 font-semibold">Order ID:</span>
@@ -75,7 +75,7 @@ const SingleOrder = () => {
         </div>
       </div>
 
-      {/* Shipping Info */}
+       
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <h3 className="text-lg font-semibold mb-3">Shipping Address</h3>
         <p>
@@ -85,8 +85,7 @@ const SingleOrder = () => {
         </p>
       </div>
 
-      {/* Items */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+       <div className="bg-white rounded-lg shadow-md p-6">
         <h3 className="text-lg font-semibold mb-3">Ordered Items</h3>
         <table className="min-w-full border-collapse text-sm">
           <thead className="bg-gray-100 text-gray-700 uppercase">

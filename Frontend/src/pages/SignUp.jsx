@@ -43,9 +43,7 @@ const SignUp = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      {/* Outer Box */}
       <div className="flex bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-5xl">
-        {/* Left Side - Image */}
         <div className="w-1/2 hidden md:flex">
           <img
             src={authImage}
@@ -54,7 +52,6 @@ const SignUp = () => {
           />
         </div>
 
-        {/* Right Side - Form */}
         <div className="w-full md:w-1/2 p-10 flex flex-col justify-center">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
             Create Account

@@ -11,8 +11,7 @@ const OrderDetails = () => {
   const [paymentStatus, setPaymentStatus] = useState("");
   const [updating, setUpdating] = useState(false);
 
-  // Fetch single order details
-  const fetchOrder = async () => {
+   const fetchOrder = async () => {
     try {
       const res = await fetch(`/api/admin/orders/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -34,8 +33,7 @@ const OrderDetails = () => {
     fetchOrder();
   }, [id]);
 
-  // Update order/payment status
-  const handleUpdateStatus = async (e) => {
+   const handleUpdateStatus = async (e) => {
     e.preventDefault();
     setUpdating(true);
     try {
@@ -66,8 +64,7 @@ const OrderDetails = () => {
     <div className="p-6 max-w-5xl mx-auto bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Order Details</h2>
 
-      {/* 🧍‍♂️ User Info */}
-      <div className="mb-6">
+       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-2">Customer Info</h3>
         <div className="text-gray-600">
           <p><strong>Name:</strong> {order.user?.name}</p>
@@ -75,8 +72,7 @@ const OrderDetails = () => {
         </div>
       </div>
 
-      {/* 🚚 Shipping Address */}
-      <div className="mb-6">
+       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-2">Shipping Address</h3>
         <div className="text-gray-600">
           <p>{order.shippingAddress.street}</p>
@@ -89,8 +85,7 @@ const OrderDetails = () => {
         </div>
       </div>
 
-      {/* 🧾 Order Items */}
-      <div className="mb-6">
+       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-2">Ordered Items</h3>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-gray-50 border rounded-lg">
@@ -116,8 +111,7 @@ const OrderDetails = () => {
         </div>
       </div>
 
-      {/* 💰 Payment + Order Summary */}
-      <div className="grid md:grid-cols-2 gap-6 mb-6">
+       <div className="grid md:grid-cols-2 gap-6 mb-6">
         <div>
           <h3 className="text-lg font-semibold text-gray-700 mb-2">Payment Info</h3>
           <p><strong>Method:</strong> {order.paymentMethod}</p>
@@ -131,8 +125,7 @@ const OrderDetails = () => {
         </div>
       </div>
 
-      {/* 🔄 Update Status */}
-      <form
+       <form
         onSubmit={handleUpdateStatus}
         className="bg-gray-50 p-4 rounded-lg border mb-6"
       >

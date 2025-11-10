@@ -6,11 +6,9 @@ import MainLogo from "../assets/MainLogo.png";
 const HeroSection = () => {
   return (
     <section className="flex flex-col md:flex-row h-screen min-h-[800px]">
-      {/* Left Content */}
-      <div className="flex flex-col justify-center items-start bg-[#1f5674] h-[800px] text-white px-10 md:px-20 lg:px-28 w-full md:w-1/2 overflow-hidden">
+       <div className="flex flex-col justify-center items-start bg-[#1f5674] h-[800px] text-white px-10 md:px-20 lg:px-28 w-full md:w-1/2 overflow-hidden">
         
-        {/* Animated text */}
-        <motion.h2
+         <motion.h2
           initial={{ opacity: 0, y: 50 }}      
           animate={{ opacity: 1, y: 0 }}       
           transition={{ duration: 1.2, ease: "easeOut" }}
@@ -21,8 +19,7 @@ const HeroSection = () => {
           and affordable roofing solutions for commercial and residential projects across Kerala.
         </motion.h2>
 
-        {/* Animated buttons */}
-        <motion.div
+         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
@@ -37,8 +34,7 @@ const HeroSection = () => {
         </motion.div>
       </div>
 
-      {/* Right Image Section */}
-      <div className="relative w-full md:w-1/2 h-[800px] bg-gradient-to-t from-[#ffffff] to-[#eaf6ff]">
+       <div className="relative w-full md:w-1/2 h-[800px] bg-gradient-to-t from-[#ffffff] to-[#eaf6ff]">
         <img
           src={HeroImage}
           alt="DuroCap Hero Section"

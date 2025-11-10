@@ -6,9 +6,9 @@ const FAQuser = () => {
   const [faqs, setFaqs] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
 
-  const API_URL = "/api/getAllFAQ"; // Vite proxy path
+  const API_URL = "/api/getAllFAQ";  
 
-  // Fetch FAQs from backend
+ 
   const fetchFAQs = async () => {
     try {
       const res = await axios.get(API_URL, { withCredentials: true });
@@ -46,21 +46,18 @@ const FAQuser = () => {
         </p>
       </header>
 
-      {/* Grouped FAQ List */}
-      {Object.keys(groupedFAQs).length === 0 ? (
+       {Object.keys(groupedFAQs).length === 0 ? (
         <p className="text-gray-500 text-center">No FAQs found.</p>
       ) : (
         Object.entries(groupedFAQs).map(([category, categoryFAQs], catIdx) => (
           <div key={catIdx} className="mb-10">
-            {/* Category Banner */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-400 text-white px-6 py-3 rounded-lg mb-5 shadow-md">
+             <div className="bg-gradient-to-r from-blue-600 to-blue-400 text-white px-6 py-3 rounded-lg mb-5 shadow-md">
               <h3 className="text-xl font-semibold tracking-wide uppercase">
                 {category}
               </h3>
             </div>
 
-            {/* FAQs under this category */}
-            <div className="space-y-4">
+             <div className="space-y-4">
               {categoryFAQs.map((faq, idx) => {
                 const uniqueIndex = `${catIdx}-${idx}`;
                 return (
@@ -102,8 +99,7 @@ const FAQuser = () => {
         ))
       )}
 
-      {/* Contact Section */}
-      <div className="mt-12 text-center bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-8 shadow-md">
+       <div className="mt-12 text-center bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-8 shadow-md">
         <h3 className="text-2xl font-semibold text-gray-800 mb-2">
           Still Have Questions?
         </h3>

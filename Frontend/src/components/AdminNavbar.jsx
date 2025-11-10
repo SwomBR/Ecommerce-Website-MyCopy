@@ -79,8 +79,7 @@ const AdminNavbar = () => {
         </div>
       </div>
 
-      {/* Logout Button */}
-      <div className="px-4 py-6 border-t border-gray-200">
+       <div className="px-4 py-6 border-t border-gray-200">
         <button
           onClick={handleLogout}
           className="w-full flex items-center justify-center p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200"

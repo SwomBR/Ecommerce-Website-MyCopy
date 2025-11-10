@@ -36,8 +36,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center bg-white shadow-md px-10 py-3">
-      {/* ---- Logo ---- */}
-      <div className="flex items-center space-x-2">
+       <div className="flex items-center space-x-2">
         <Link to="/home" className="flex items-center space-x-2">
           <img
             src={logo}
@@ -47,8 +46,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* ---- Links ---- */}
-      <div className="flex space-x-6 items-center">
+       <div className="flex space-x-6 items-center">
         {["home", "about", "products", "services", "projects", "contact"].map((item) => (
           <Link
             key={item}
@@ -78,8 +76,7 @@ const Navbar = () => {
               <span className="text-sm">▼</span>
             </button>
 
-            {/* Animated Dropdown */}
-            <div
+             <div
               className={`absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-lg shadow-lg transform transition-all duration-200 origin-top-right ${
                 dropdownOpen
                   ? "opacity-100 scale-100"

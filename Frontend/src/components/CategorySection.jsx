@@ -20,8 +20,7 @@ const CategorySection = () => {
         Our Categories
       </h2>
 
-      {/* Categories Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-items-center">
+       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-items-center">
         {visibleCategories.map((category) => (
           <div
             key={category.id}
@@ -39,8 +38,7 @@ const CategorySection = () => {
         ))}
       </div>
 
-      {/* View More Button */}
-      {categories.length > 5 && (
+       {categories.length > 5 && (
         <div className="flex justify-center mt-10">
           <button
             onClick={() => setShowAll(!showAll)}

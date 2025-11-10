@@ -8,8 +8,7 @@ const About = () => {
     <section className="bg-white py-16 px-8 md:px-20">
       <div className="flex flex-col md:flex-row items-center justify-between gap-2">
 
-        {/* Left Section - Text */}
-        <div className="md:w-1/2 space-y-6 ml-[100px]">
+         <div className="md:w-1/2 space-y-6 ml-[100px]">
           <h2 className="text-4xl font-extrabold text-gray-900 leading-tight">
             WHO WE ARE?<br />WHY WE ARE?
           </h2>
@@ -30,10 +29,8 @@ const About = () => {
           </Link>
         </div>
 
-        {/* Right Section - Images */}
-        <div className="md:w-1/2 flex items-center justify-center relative">
-          {/* First Image */}
-          <div className="w-1/2 mr-[-30px] z-20">
+         <div className="md:w-1/2 flex items-center justify-center relative">
+           <div className="w-1/2 mr-[-30px] z-20">
             <img
               src={durocap}
               alt="Durocap Building"
@@ -41,8 +38,7 @@ const About = () => {
             />
           </div>
 
-          {/* Second Image */}
-          <div className="w-1/2 z-10">
+           <div className="w-1/2 z-10">
             <img
               src={image01}
               alt="Durocap Project"
@@ -50,8 +46,7 @@ const About = () => {
             />
           </div>
 
-          {/* Circle Overlay */}
-          <div className="absolute bg-white rounded-full shadow-lg flex flex-col items-center justify-center w-32 h-32 text-center -bottom-6 left-1/2 transform -translate-x-1/2 border border-gray-200 z-20">
+           <div className="absolute bg-white rounded-full shadow-lg flex flex-col items-center justify-center w-32 h-32 text-center -bottom-6 left-1/2 transform -translate-x-1/2 border border-gray-200 z-20">
             <h3 className="text-2xl font-bold text-gray-900">100+</h3>
             <p className="text-sm text-gray-600 leading-tight">
               SUCCESSFUL<br />PROJECTS

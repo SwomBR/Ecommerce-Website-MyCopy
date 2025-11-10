@@ -130,12 +130,12 @@ const Category = () => {
       <AdminNavbar />
       <div className="bg-gray-200 ml-[280px] min-h-screen py-10 px-4">
         <div className="max-w-6xl mx-auto">
-          {/* Page Title */}
+          
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">
             {editMode ? "Edit Category" : "Add Category"}
           </h2>
 
-          {/* Form */}
+          
           <form
             onSubmit={handleSubmit}
             className="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-10"
@@ -230,7 +230,7 @@ const Category = () => {
             </div>
           </form>
 
-          {/* Search Bar */}
+          
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-5 gap-3">
             <h2 className="text-xl font-semibold text-gray-800">
               All Categories
@@ -244,7 +244,7 @@ const Category = () => {
             />
           </div>
 
-          {/* Category Table */}
+        
           <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm text-gray-700">
@@ -336,7 +336,7 @@ const Category = () => {
             </div>
           </div>
 
-          {/* Pagination */}
+          
           {filteredCategories.length > itemsPerPage && (
             <div className="flex justify-end items-center mt-6 gap-3">
               <button
@@ -363,7 +363,7 @@ const Category = () => {
             </div>
           )}
 
-          {/* Image Preview Modal */}
+          
           {previewImage && (
             <div
               className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"

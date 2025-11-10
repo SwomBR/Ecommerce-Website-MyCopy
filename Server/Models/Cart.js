@@ -35,7 +35,6 @@ const cartSchema = new Schema({
   },
 }, { timestamps: true });
 
-// Pre-save hook to auto-calculate total amount
 cartSchema.pre("save", function (next) {
   this.totalAmount = this.items.reduce(
     (sum, item) => sum + item.priceAtAddTime * item.quantity,

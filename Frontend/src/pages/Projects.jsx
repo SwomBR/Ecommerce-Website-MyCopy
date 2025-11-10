@@ -56,7 +56,7 @@ const Projects = () => {
     <>
       <Navbar />
       <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto bg-gray-50 mt-[40px]">
-        {/* Section Title */}
+        
         <div className="text-center mb-12 relative">
           <h1 className="text-4xl md:text-5xl font-bold text-blue-900 mb-4">
             Our Projects
@@ -64,7 +64,7 @@ const Projects = () => {
           <div className="absolute left-1/2 -bottom-2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-red-500 to-blue-500"></div>
         </div>
 
-        {/* Filter Buttons */}
+        
         <div className="flex justify-center flex-wrap gap-3 mb-10">
           {filters.map((btn) => (
             <button
@@ -81,7 +81,7 @@ const Projects = () => {
           ))}
         </div>
 
-        {/* Projects Grid */}
+         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProjects.map((project) => (
             <div

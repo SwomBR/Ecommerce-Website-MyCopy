@@ -3,7 +3,7 @@ import axios from "axios";
 import { FaTrash, FaChevronDown, FaPlus } from "react-icons/fa";
 import AdminNavbar from "../../components/AdminNavbar";
 
-const API_URL = "/api"; // Vite proxy → http://localhost:8000/
+const API_URL = "/api";  
 
 const FaqAdmin = () => {
   const [faqs, setFaqs] = useState([]);
@@ -15,7 +15,7 @@ const FaqAdmin = () => {
     answers: "",
   });
 
-  // 🔹 Fetch all FAQs
+  
   const fetchFAQs = async () => {
     try {
       const res = await axios.get(`${API_URL}/getAllFAQ`);
@@ -25,7 +25,7 @@ const FaqAdmin = () => {
     }
   };
 
-  // 🔹 Add new FAQ
+ 
   const addFAQ = async (e) => {
     e.preventDefault();
     try {
@@ -37,7 +37,7 @@ const FaqAdmin = () => {
     }
   };
 
-  // 🔹 Delete FAQ
+   
   const deleteFAQ = async (id) => {
     try {
       await axios.delete(`${API_URL}/deleteFAQ/${id}`);
@@ -47,7 +47,7 @@ const FaqAdmin = () => {
     }
   };
 
-  // 🔹 Toggle FAQ open/close
+ 
   const toggleFAQ = (index) =>
     setActiveIndex(activeIndex === index ? null : index);
 
@@ -59,8 +59,7 @@ const FaqAdmin = () => {
     <>
     <AdminNavbar/>
     <section className="max-w-5xl mx-auto px-6 py-10 ml-[400px]">
-      {/* 🔹 Header */}
-      <div className="text-center mb-10">
+       <div className="text-center mb-10">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">
           Frequently Asked Questions
         </h2>
@@ -69,8 +68,7 @@ const FaqAdmin = () => {
         </p>
       </div>
 
-      {/* 🔹 Add FAQ Form */}
-      <form
+       <form
         onSubmit={addFAQ}
         className="bg-white rounded-lg shadow p-6 mb-8 space-y-4"
       >
@@ -130,7 +128,7 @@ const FaqAdmin = () => {
         </button>
       </form>
 
-      {/* 🔹 FAQ List */}
+      
       <div className="space-y-4">
         {faqs.length === 0 ? (
           <p className="text-gray-500 text-center">No FAQs found.</p>

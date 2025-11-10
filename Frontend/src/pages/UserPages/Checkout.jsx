@@ -8,8 +8,7 @@ const Checkout = () => {
   const [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch latest cart details
-  const fetchCart = async () => {
+   const fetchCart = async () => {
     try {
       const res = await axios.get("/cart", { withCredentials: true });
       setCart(res.data);
@@ -24,15 +23,13 @@ const Checkout = () => {
     fetchCart();
   }, []);
 
-  // Handle mock payment
-  const handlePayment = async () => {
+   const handlePayment = async () => {
     try {
       setProcessing(true);
       const paymentRes = await axios.post("/cart/payment", {}, { withCredentials: true });
       console.log("Payment Response:", paymentRes.data);
 
-      // Proceed to checkout (order placement)
-      const checkoutRes = await axios.post("/cart/checkout", {}, { withCredentials: true });
+       const checkoutRes = await axios.post("/cart/checkout", {}, { withCredentials: true });
       console.log("Checkout Response:", checkoutRes.data);
 
       alert("Order placed successfully!");
