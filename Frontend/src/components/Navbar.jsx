@@ -86,7 +86,6 @@ const Navbar = () => {
                 <span className="text-sm">▼</span>
               </button>
 
-              {/* Dropdown Menu */}
               <div
                 className={`absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-lg shadow-lg transform transition-all duration-200 origin-top-right ${
                   dropdownOpen
@@ -97,7 +96,7 @@ const Navbar = () => {
                 {user.role === "admin" ? (
                   <>
                     <Link
-                      to="/dashboard"
+                      to="/adminDashboard"
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                       onClick={() => setDropdownOpen(false)}
                     >
@@ -120,7 +119,7 @@ const Navbar = () => {
                       Cart
                     </Link>
                     <Link
-                      to="/orders"
+                      to="/userOrders"
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                       onClick={() => setDropdownOpen(false)}
                     >

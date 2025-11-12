@@ -22,8 +22,7 @@ const FAQuser = () => {
     fetchFAQs();
   }, []);
 
-  // Group FAQs by category
-  const groupedFAQs = faqs.reduce((acc, faq) => {
+   const groupedFAQs = faqs.reduce((acc, faq) => {
     const category = faq.category || "General";
     if (!acc[category]) acc[category] = [];
     acc[category].push(faq);
@@ -35,8 +34,7 @@ const FAQuser = () => {
 
   return (
     <section className="max-w-6xl mx-auto px-6 py-10">
-      {/* Header */}
-      <header className="text-center mb-10">
+       <header className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
           Frequently Asked Questions
         </h2>

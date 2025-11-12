@@ -26,7 +26,7 @@ const services = [
     icon: <Home className="w-10 h-10 text-blue-600" />,
     title: "Roof Maintenance",
     description:
-      "We offer regular inspection, repair, and cleaning services to extend your roof’s lifespan.",
+      "We offer regular inspection, repair, and cleaning services to extend your roof's lifespan.",
   },
   {
     icon: <Droplets className="w-10 h-10 text-blue-600" />,
@@ -62,7 +62,7 @@ const Services = () => {
           className="text-gray-600 text-lg mb-12 max-w-3xl mx-auto"
         >
           We offer professional roofing solutions that ensure long-lasting
-          protection and enhance your property’s value.
+          protection and enhance your property's value.
         </p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
