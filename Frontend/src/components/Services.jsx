@@ -5,44 +5,40 @@ import { Hammer, Droplets, Home, Ruler, Layers } from "lucide-react";
 
 const services = [
   {
-    icon: <Ruler className="w-10 h-10 text-blue-600 animate-pulse" />,
+    icon: <Ruler className="w-10 h-10 text-blue-600" />,
     title: "Roof Design and Visualization",
     description:
       "We create custom 3D roof designs to help you visualize your dream roof before installation begins.",
-    aos: "flip-left",
-    delay: "0",
   },
   {
-    icon: <Layers className="w-10 h-10 text-blue-600 animate-pulse" />,
+    icon: <Layers className="w-10 h-10 text-blue-600" />,
     title: "Roofing Material Supply",
     description:
       "We provide high-quality roofing materials including tiles, shingles, and sheets from trusted brands.",
-    aos: "flip-right",
-    delay: "150",
   },
   {
-    icon: <Hammer className="w-10 h-10 text-blue-600 animate-pulse" />,
+    icon: <Hammer className="w-10 h-10 text-blue-600" />,
     title: "Roofing Installations",
     description:
       "Our expert team ensures safe, durable, and precise roof installation using modern techniques.",
-    aos: "zoom-in",
-    delay: "200",
   },
   {
-    icon: <Home className="w-10 h-10 text-blue-600 animate-pulse" />,
+    icon: <Home className="w-10 h-10 text-blue-600" />,
     title: "Roof Maintenance",
     description:
       "We offer regular inspection, repair, and cleaning services to extend your roof’s lifespan.",
-    aos: "zoom-in",
-    delay: "250",
   },
   {
-    icon: <Droplets className="w-10 h-10 text-blue-600 animate-pulse" />,
+    icon: <Droplets className="w-10 h-10 text-blue-600" />,
     title: "Rain Gutter Installation",
     description:
       "We install durable rain gutters to protect your building from water damage and foundation issues.",
-    aos: "zoom-in",
-    delay: "300",
+  },
+  {
+    icon: <Hammer className="w-10 h-10 text-blue-600" />,
+    title: "Roof Leak Repairs",
+    description:
+      "Quick and efficient leak detection and repair to prevent long-term roof damage.",
   },
 ];
 
@@ -52,53 +48,44 @@ const Services = () => {
   }, []);
 
   return (
-    <section className="py-24 px-6 md:px-20 bg-gradient-to-br from-[#e0f7ff] to-[#f8fdff] text-center overflow-hidden" id="services">
-      <h2
-        data-aos="fade-down"
-        className="text-4xl md:text-5xl font-bold text-[#0066cc] mb-6 animate-[floatTitle_4s_ease-in-out_infinite]"
-      >
-        Our <span className="text-blue-600">Services</span>
-      </h2>
-      <p
-        data-aos="fade-up"
-        data-aos-delay="100"
-        className="text-lg text-gray-600 mb-16"
-      >
-        High-quality roofing solutions to protect, enhance, and maintain your property.
-      </p>
+    <section className="py-20 bg-gray-100 text-center" id="services">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <h2
+          data-aos="fade-up"
+          className="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
+        >
+          Our <span className="text-blue-600">Services</span>
+        </h2>
+        <p
+          data-aos="fade-up"
+          data-aos-delay="100"
+          className="text-gray-600 text-lg mb-12 max-w-3xl mx-auto"
+        >
+          We offer professional roofing solutions that ensure long-lasting
+          protection and enhance your property’s value.
+        </p>
 
-      <div className="grid gap-10 md:grid-cols-3 justify-items-center">
-        {services.map((service, index) => (
-          <div
-            key={index}
-            data-aos={service.aos}
-            data-aos-delay={service.delay}
-            className="relative bg-white rounded-2xl p-10 text-center shadow-lg transform transition duration-400 hover:-translate-y-3 hover:rotate-x-1 hover:rotate-y-1 overflow-hidden w-full sm:w-[90%] md:w-[90%] lg:w-[85%]"
-          >
-            <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-gradient-radial from-blue-600/15 to-transparent rotate-[30deg] animate-[spin_8s_linear_infinite] pointer-events-none"></div>
-
-            <div className="relative z-10 flex flex-col items-center">
-              {service.icon}
-              <h3 className="mt-4 text-xl font-semibold text-gray-800">{service.title}</h3>
-              <p className="mt-2 text-gray-500 text-sm">{service.description}</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map((service, index) => (
+            <div
+              key={index}
+              data-aos="zoom-in"
+              data-aos-delay={index * 100}
+              className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 p-8 flex flex-col items-center text-center border border-gray-100"
+            >
+              <div className="bg-blue-50 p-5 rounded-full mb-6">
+                {service.icon}
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                {service.title}
+              </h3>
+              <p className="text-gray-600 text-sm mb-6">
+                {service.description}
+              </p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-
-      <style>
-        {`
-          @keyframes floatTitle {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-          }
-
-          @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-          }
-        `}
-      </style>
     </section>
   );
 };
