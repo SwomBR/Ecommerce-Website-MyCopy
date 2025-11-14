@@ -30,6 +30,7 @@ import EnquiryDetails from './pages/AdminPages/EnquiryDetails';
 import EnquiryForm from './components/EnquiryForm';
 import FaqAdmin from './pages/AdminPages/FaqAdmin';
 import FAQuser from './pages/FAQuser';
+import AdminLogin from './pages/AdminPages/AdminLogin';
 
 const App = () => {
   return (
@@ -53,6 +54,8 @@ const App = () => {
         <Route path='/userOrders' element={<UserOrders/>}/>
         <Route path='/profile' element={<ProfilePage/>}/>
         <Route path='/singOrder' element={<SingleOrder/>}/>
+
+        <Route path='/admin/login' element={<AdminLogin/>}/>
 
         <Route path='/addproduct' element={<AddProduct/>}/>
         <Route path='/adminDashboard' element={<AdminDashboard/>}/>

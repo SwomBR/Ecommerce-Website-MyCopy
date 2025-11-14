@@ -25,7 +25,9 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get("http://localhost:8000/logout", { withCredentials: true });
+      await axios.get("http://localhost:8000/logout", {
+        withCredentials: true
+      });
       localStorage.removeItem("user");
       setUser(null);
       navigate("/home");
