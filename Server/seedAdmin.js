@@ -1,26 +1,33 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import Admin from "./Models/Admin.js";
+import User from "./models/User.js";
 
 dotenv.config();
 
-mongoose.connect("mongodb://localhost:27017/DuroCap")
-    .then(async () => {
-        console.log("Connected to DB");
+async function createAdmin() {
+    await mongoose.connect(process.env.MONGO_URI);
 
-        const adminExists = await Admin.findOne({ email: "admin@durocap.com" });
+    const exists = await User.findOne({ email: "admin@durocap.com" });
 
-        if (!adminExists) {
-            await Admin.create({
-                name: "Super Admin",
-                email: "admin@durocap.com",
-                password: "Admin@123"
-            });
-            console.log("Admin created successfully");
-        } else {
-            console.log("Admin already exists");
-        }
+    if (exists) {
+        console.log("Admin already exists!");
+        process.exit();
+    }
 
-        mongoose.connection.close();
-    })
-    .catch(err => console.error(err));
+    const hashed = await bcrypt.hash("Admin@12345", 10);
+
+    const admin = new User({
+        name: "System Admin",
+        email: "admin@durocap.com",
+        password: hashed,
+        role: "admin",
+    });
+
+    await admin.save();
+
+    console.log("✔ Admin Created Successfully!");
+    process.exit();
+}
+
+createAdmin();
